@@ -6,3 +6,7 @@ javaSE basic
 [条件判断语句](/constat.md)
 
 [循环语句](/loopstat.md)
+
+[数组](/Array.md)
+
+[面向对象](/OOP1.md)
