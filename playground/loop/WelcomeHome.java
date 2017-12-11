@@ -1,5 +1,5 @@
 //package myjava;
-package loop_stat;
+package com.wangy325.loop;
 
 public class WelcomeHome {
 

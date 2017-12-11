@@ -1,5 +1,5 @@
 //package Train;
-package loop_stat;
+package com.wangy325.loop;
 
 public class MultiplicationTable {
 

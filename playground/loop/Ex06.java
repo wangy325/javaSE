@@ -1,5 +1,5 @@
 //package Ex;
-package loop_stat;
+package com.wangy325.loop;
 
 import java.util.Scanner;
 

@@ -1,6 +1,6 @@
 package com.wangy325.arrays;
 
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Scanner;
 
 public class Ex06 {

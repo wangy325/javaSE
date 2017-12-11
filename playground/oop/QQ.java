@@ -44,4 +44,11 @@ public class QQ {
 			System.out.println("Age is "+age);
 		}
 		
+		public void setAttribute(String NickName,String ID,String PassWd,int Age){
+			this.NickName = NickName;
+			this.ID = ID;
+			this.PassWd = PassWd;
+			this.Age = Age;
+			System.out.println("NickName:"+NickName+"\tID:"+ID+"\tPassWd"+PassWd+"\tAge"+Age);
+		}
 }
