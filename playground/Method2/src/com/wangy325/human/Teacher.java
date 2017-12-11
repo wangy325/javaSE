@@ -36,7 +36,7 @@ public class Teacher extends Human {
 	}
 	
 	public String selfItroduction() {
-		return super.selfItroduction() +" job NO. is "+this.JN+ "with a " + (this.YoT +"") +" years teaching experice.";  
+		return super.selfItroduction() +" job NO. is "+this.JN+ " with a " + (this.YoT +"") +" years teaching experice.";  
 	}
 	
 	

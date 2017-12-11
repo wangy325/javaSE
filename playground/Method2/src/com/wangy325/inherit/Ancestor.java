@@ -8,7 +8,7 @@ package com.wangy325.inherit;
  *
  * @date Dec 10, 2017  12:53:14 PM
  *
- * @decription   构造代码块, 静态代码块, 构造方法 的定义 以及 运行顺序
+ * @decription   讨论了构造代码块, 静态代码块, 构造方法 的定义 以及 在继承中代码块的运行顺序
  * 
  * @target TODO
  */
