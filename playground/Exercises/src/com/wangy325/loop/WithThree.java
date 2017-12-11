@@ -1,4 +1,4 @@
-
+package com.wangy325.loop;
 
 public class WithThree{
 	public static void main (String[] args){
