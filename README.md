@@ -16,3 +16,9 @@ javaSE 基础纲要
 [封装](/handout/Method2.md)
 
 [多态](/handout/Polymorphism.md)
+
+[抽象类和接口](/handout/Abstract.md)
+
+[内部类和设计模型](/handout/InnerClass.md)
+
+[字符串](/handout/String.md)

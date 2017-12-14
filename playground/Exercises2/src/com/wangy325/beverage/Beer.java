@@ -17,6 +17,7 @@ class Beer extends Beverage {
 	public static void main(String [] args) {
 
        Beer b = new Beer (14) ;
+       System.out.print(b.toString());
 
   }
 
@@ -25,12 +26,20 @@ class Beer extends Beverage {
 
 		this();
 
-		System.out.print("beerl");
+		System.out.print("beerl\n");
 
 	}
 
 	public Beer() {
 		System.out.print("beer2 ");
 	}
+
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.getClass().getName() + " @ wangy325";
+	}
+	
 
 }

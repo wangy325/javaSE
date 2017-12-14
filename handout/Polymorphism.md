@@ -112,7 +112,7 @@ FatherClass fClass = new ChildClass();//向上转型
 **所有的类均直接或间接的继承自Object类**
 
 1. 当定义一个类的时候，如果没有显式的使用extends关键字来声明继承某个类，则该类默认继承Object，所以Object类中方法，被所有的类继承过来了。
-2. Object类可以看成是java中的“上帝类”或“祖宗类”。如果一个类显式的继承某个类，则该类不再直接继承Object类(Java的单继承，亲爹只能有一个)。但一定是间接继承Object类。
+2. Object类可以看成是java中的“上帝类”或“祖宗类”。如果一个类显式的继承某个类，则该类不再直接继承Object类(Java的单继承)。但一定是间接继承Object类。
 
 ```java
 public class Person {
@@ -120,7 +120,7 @@ public class Person {
 与
 public class Person extends Object{
 }
-是等价的。
+是等价的
 ```
 
 ### 10.3.1 equals()方法

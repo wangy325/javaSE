@@ -494,6 +494,10 @@ class SubSubClass extends SubClass{
 
 ​       ②在main方法中创建狗类对象（dog）、猫类对象（cat）、G类对象（g），用g调用makecry方法，让狗和猫吼叫。
 
+
+
+
+
 2．某公司正进行招聘工作，被招聘人员需要填写个人信息，编写“个人简历”的封装类。包括如下属性和对属性**进行操作**的方法。
 
 ​    String xm;// 姓名
