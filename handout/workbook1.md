@@ -482,6 +482,8 @@ class SubSubClass extends SubClass{
 
 ### 编程题
 
+> 所有题目的代码写在[workbook1](/playground/Exercises2/src/com/wangy325)中
+
 1．按要求编写一个Java应用程序：
 
 (1)定义一个接口CanCry，描述会吼叫的方法public void cry()。
@@ -493,10 +495,6 @@ class SubSubClass extends SubClass{
 ​       ①定义一个void makeCry(CanCry c)方法，其中让会吼叫的事物吼叫。
 
 ​       ②在main方法中创建狗类对象（dog）、猫类对象（cat）、G类对象（g），用g调用makecry方法，让狗和猫吼叫。
-
-
-
-
 
 2．某公司正进行招聘工作，被招聘人员需要填写个人信息，编写“个人简历”的封装类。包括如下属性和对属性**进行操作**的方法。
 
@@ -510,24 +508,6 @@ class SubSubClass extends SubClass{
 
 ​    String xl;// 学历
 
-```java
-class Resume(){
-  protected String name, gender,address,degree;
-  protected int age;
-  
-  private void setInfo(String name, String gender, String address, String degree,int age){
-    
-  }
-  
-  
-}
-
-```
-
-
-
- 
-
 3．编写程序，提供实现各种数学计算的方法。包括如下几项。
 
 （1）两个数的加、减、乘、除。
@@ -536,7 +516,7 @@ class Resume(){
 
 （3）取两数中较大的和较小的。
 
-（4）对浮点数（double型）的计算功能。如：给定浮点数d，取大于或等于d的最小整数，取小于或等于d的最大整数，计算最接近d的整数值，计算d的平方根、自然对数log(d)等。
+（4）对浮点数（double型）的计算功能。如：给定浮点数d，取大于或等于d的最小整数，取小于或等于d的最大整数，计算最接近d的整数值，计算d的平方根、自然对数ln(d)等。
 
 （5）计算以double型数a为底数，b为指数的幂。
 
@@ -583,7 +563,7 @@ class Resume(){
   - 属性：有42个学生的容量，Student[] stus = new Student[42];。
   - 添加适当的构造方法
   - 方法：
-    - 添加完整的学生信息  addStudent(Student stu)
+    - 添加学生  addStudent(Student stu)
     - 添加学生信息，只有名字 addStudent(String name)
     - 添加学生信息，只有名字和年龄 addStudent(String name,int age)
     - 添加学生信息，有名字和年龄和性别 addStudent(String name,int age,char sex)
