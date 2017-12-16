@@ -163,6 +163,7 @@ public abstract class  Animal{
 
 
 作业：
+===
 
 1. 定义一个接口，USBInterface。USB接口。再编写一个抽象方法 void service(); 该USB用有的功能。
 

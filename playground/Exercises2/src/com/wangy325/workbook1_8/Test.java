@@ -36,15 +36,21 @@ public class Test {
 		Class.addStudent("alen", 20, 'm');
 		Class.addStudent("Fox", 19, 'm');
 		Class.printInfo();
-		System.out.println("----更改学生信息----");
+		System.out.println("----学生信息操作----");
+		Scanner Name = new Scanner(System.in);
 		System.out.println("please input student name to revise info:");
-		Scanner oldName = new Scanner(System.in);
-		String oldN = oldName.next();
-		Class.updateStudent(oldN);
-		oldName.close();
-		System.out.println("----删除学生----");
-		Class.delStudent("lucy");
+		String reviseStu = Name.next();
+		System.out.println("please input student name to delete info:");
+		String delStu= Name.next();
+//		next() 的用法还需要进一步学习
+		System.out.println("----revising student info-----");
+		Class.updateStudent(reviseStu);
+		System.out.println("----deleting student info----");
+		Class.delStudent(delStu);
+		System.out.println("-------show ultimate student info---------");
 		Class.printInfo();
+		Name.close();
+		
 		
 		
 	}

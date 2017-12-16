@@ -2,7 +2,7 @@
 
 ## 14.1 基本数据类型的包装类
 
-​	Java是一种纯面向对象语言，但是java中有8种基本数据类型，破坏了java为纯面向对象的特征。为了承诺在java中一切皆对象，java又给每种基本数据类型分别匹配了一个类，这个类我们称之为包装类。
+​	Java是一种纯面向对象语言，但是Java中有8种基本数据类型，破坏了Java为纯面向对象的特征。为了承诺在Java中一切皆对象，Java又给每种基本数据类型分别匹配了一个类，这个类我们称之为包装类(包装器)。
 
 >注意：每个基本数据类型都有一个与之匹配的包装类。
 
@@ -29,7 +29,11 @@
 
 #### 14.1.2.2 自动装箱和自动拆箱
 
-前面的装箱和拆箱操作，相对较麻烦。自jdk1.5开始，java增加的对基本数据类型的自动装箱和自动拆箱操作。java编译器在编译时期会根据源代码的语法来决定是否进行装箱或拆箱。
+前面的装箱和拆箱操作，相对较麻烦。
+
+自jdk1.5开始，**Java增加的对基本数据类型的自动装箱和自动拆箱操作**。
+
+Java编译器在编译时期会根据源代码的语法来决定是否进行装箱或拆箱。
 
 1. 自动装箱：可以直接把一个基本数据类型赋值给包装类
 
@@ -47,7 +51,10 @@
 
 #### 14.2.1.1 概述
 
-1. String是不可变类，即一旦一个String对象被创建, 包含在这个对象中的字符序列是不可改变的, 直至该对象被销毁。 
+1. String是**不可变类**，即一旦一个String对象被创建, 包含在这个对象中的**字符序列**是不可改变的, 直至该对象被销毁。 
+
+   > 知乎: [如何理解String不可变?](https://www.zhihu.com/question/20618891)
+
 2. String类是final类，不能有子类。
 
 #### 14.2.1.2 创建字符串对象
@@ -55,19 +62,19 @@
 1. 使用new关键字
 
    ```java
-   String s1 = new String(“ab”);  
+   String s1 = new String("ab");  
    ```
 
 2. 使用字符串常量直接赋值 
 
    ```java
-   String s2 = “abc”; 
+   String s2 = "abc"; 
    ```
 
-3. 使用”+”运算符进行字符串连接
+3. 使用"+"运算符进行字符串连接
 
    ```java
-   String s3 = “abc” + “d”;
+   String s3 = "abc" + "d";
    String s4 = s3 + 5;  //abcd5
    ```
 
@@ -75,7 +82,7 @@
 
 常量池概念：
 
-​	Java运行时会维护一个String Pool（String池）， 也叫“字符串缓冲区”。String池用来存放运行时中产生的各种字符串，并且池中的字符串的内容不重复。运行时常量池（Runtime Constant Pool）是方法区（Method Area）的一部分，是各线程共享的内存区域。
+​	Java运行时会维护一个String Pool（String池）， 也叫"字符串缓冲区"。String池用来存放运行时中产生的各种字符串，并且池中的字符串的内容不重复。运行时**常量池（Runtime Constant Pool）是方法区（Method Area）**的一部分，是各线程共享的内存区域。
 
 String对象的创建很讲究，关键是要明白其原理。[new String("abc")原理](http://www.cnblogs.com/justinli/p/4064128.html)
 
@@ -87,9 +94,10 @@ String对象的创建很讲究，关键是要明白其原理。[new String("abc"
 
    ```java
    public static void main(String[] args){
-   	String a = "a1";
-       String b = "a"+ 1;
-       System.out.println(a==b);
+   	String a = "a1";   // 常量池
+       String b = "a"+ 1;	//常量池
+       System.out.println(a==b); // 比较的是引用对象的值,这个[值] 存储的是 对象的地址
+     // 返回值为 [ture] 说明 a 和 b 指向的同一个东西[a1], 它在常量池中
    }//true
    ```
 
@@ -97,8 +105,8 @@ String对象的创建很讲究，关键是要明白其原理。[new String("abc"
 
    ```java
    public static void main(String[] args){
-   	String a = "ab";
-       String k = "b";
+   	String a = "ab";	// 常量池
+       String k = "b";		// 常量池
        String b = "a"+ k;//编译器不能确定为常量(会在堆区创建一个String对象)
        System.out.println(a==b);
    }//false
@@ -117,7 +125,7 @@ String对象的创建很讲究，关键是要明白其原理。[new String("abc"
    public static void main(String[] args){
    	String a = "ab";
    	final String k = getK();
-       String b = "a"+ k;//k是通过函数返回的，虽然我们知道它是final的，但程序不能确定具体返回啥，所以要到运行期才知道bb的值。理论上，整个方法的返回值也变成了一个变量。
+       String b = "a"+ k;//k是通过函数返回的，虽然我们知道它是final的，但程序不能确定具体返回啥，所以要到运行期才知道b的值。理论上，整个方法的返回值也变成了一个变量。
    	System.out.println(a==b);
    }//false
 
@@ -133,7 +141,7 @@ String对象的创建很讲究，关键是要明白其原理。[new String("abc"
        String s2 = "b";
        String s = s1 + s2;//+的用法
        System.out.println(s == a);
-       System.out.println(s.intern() == a);//intern的含义(将字符串堆对象放入常量池，并返回指向放入常量池后的引用)
+       System.out.println(s.intern() == a); //intern的含义(将字符串堆对象放入常量池，并返回指向放入常量池后的引用)
    }//flase true
    ```
 
@@ -157,47 +165,47 @@ String对象的创建很讲究，关键是要明白其原理。[new String("abc"
 
 ##### 14.2.1.4.1 获得新字符串对象的常用方法
 
-1. public String  concat(String str)   在原有字符串的尾部添加参数字符串，返回一个新的字符串（总是堆内存中的对象），如果str的长度为0，则返回原字符串。str不能为空null。
+1. `public String concat(String str)`   在原有字符串的尾部添加参数字符串，返回一个新的字符串（总是堆内存中的对象），如果str的长度为0，则返回原字符串。str不能为空null。
 
-2. public String  subString(int beginIndex) 获得从beginIndex开始到结束的子字符串。（ 包括beginIndex位置的字符）
+2. `public String  substring(int beginIndex) `获得从beginIndex开始到结束的子字符串。（ 包括beginIndex位置的字符）
 
-3. public String  subString(int beginIndex,int endIndex) 获得从beginIndex开始到endIndex的子字符串。（ 包括beginIndex位置的字符,但不包含endIndex）
+3. `public String  substring(int beginIndex,int endIndex)` 获得从beginIndex开始到endIndex的子字符串。（ 包括beginIndex位置的字符,但不包含endIndex）
 
-4. public String toLowerCase()  把字符串中的英文字符全部转换为小写字符，返回值为转换后的新的字符串。
+4. `public String toLowerCase()`  把字符串中的英文字符全部转换为小写字符，返回值为转换后的新的字符串。
 
-5. public String toUpperCase()   把字符串中的英文字符全部转换为大写字符，返回值为转换后的新的字符串。
+5. `public String toUpperCase() `  把字符串中的英文字符全部转换为大写字符，返回值为转换后的新的字符串。
 
-6. public String trim()  把字符串中的首尾的空白字符去掉，返回去掉首尾空白字符的新字符串
+6. `public String trim()`  把字符串中的**首尾**的空白字符去掉，返回去掉首尾空白字符的新字符串
 
-7. public String replace(CharSequence target,  CharSequence replacement) 使用指定的字面值替换序列替换此字符串所有匹配字面值目标序列的子字符串
+7. `public String replace(CharSequence target,  CharSequence replacement)` 使用指定的字面值替换序列替换此字符串所有匹配字面值目标序列的子字符串
 
    ```java
    String src = new String("ab43a2c43d");
-   System.out.println(src.replace("3","f")); =>ab4f2c4fd
+   System.out.println(src.replace("3","f")); // ab4f2c4fd
    ```
 
-8. public String replace(char oldChar, char newChar) 返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。
+8. `public String replace(char oldChar, char newChar) `返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。
 
    ```java
    　String src = new String("ab43a2c43d");
-   　System.out.println(src.replace('3','f')); =>ab4f2c4fd
+   　System.out.println(src.replace('3','f')); // ab4f2c4fd
    ```
 
 ##### 14.2.1.4.2 计算字符串长度的方法
 
-​	public int length();  //返回字符串字符的个数。
+​	`public int length(); ` //返回字符串字符的个数。
 
 ##### 14.2.1.4.3 字符串比较
 
-1. ”==”表示判断该两个字符串是否为同一对象，即在内存中的地址是否一样。如果一样则返回true 否则返回false;  和我们通常的是否为同一对象的是一样的。
+1. `==`表示判断该两个字符串是否为同一对象，即在内存中的地址是否一样。如果一样则返回true 否则返回false;  和我们通常的是否为同一对象的是一样的。
 
-2. boolean equals(Object anObject)   将此字符串与指定的对象比较。注意此时比较的是内容是否相等(字符串类对此方法进行了覆写)。 
+2. `boolean equals(Object anObject) `  将此字符串与指定的对象比较。注意此时比较的是内容是否相等(字符串类对此方法进行了覆写)。 
 
    例如：
 
    ```java
-   String s1 = new String(“abc”);  
-   String s2 = “abc”
+   String s1 = new String("abc");  
+   String s2 = "abc"
    ```
 
    则：
@@ -207,19 +215,19 @@ String对象的创建很讲究，关键是要明白其原理。[new String("abc"
    s1.equals(s2);  //true
    ```
 
-3. boolean equalsIgnoreCase(String anotherString) 将此 String 与另一个 String 比较，不考虑大小写。
+3. `boolean equalsIgnoreCase(String anotherString)` 将此 String 与另一个 String 比较，不考虑大小写。
 
    例如：
 
    ```java
-   ”abc”. equalsIgnoreCase(“AbC”); // true
+   "abc". equalsIgnoreCase("AbC"); // true
    ```
 
-4. int compareTo(String value)  返回参与比较的前后两个字符串的asc码的差值
+4. `int compareTo(String value)` 返回参与比较的前后两个字符串的ASCII码的差值
 
    1. ```java
       String a="a",b="b";
-      System.out.println(a.compareto.b);
+      System.out.println(a.compareTo(b));
       则输出-1；
       若a="a",b="a"则输出0；
       若a="b",b="a"则输出1；
@@ -232,20 +240,22 @@ String对象的创建很讲究，关键是要明白其原理。[new String("abc"
       若a="abcdef",b="b"则输出-1；
       ```
 
-      > 也就是说，如果两个字符串首字母不同，则该方法返回首字母的asc码的差值；
+      > 也就是说，如果两个字符串首字母不同，则该方法返回首字母的ASCII码的差值；
 
    3. 如果首字母相同呢？
 
       ```java
-      若a="ab",b="a",输出1；
-      若a="abcdef",b="a"输出5；
-      若a="abcdef",b="abc"输出3；
-      若a="abcdef",b="ace"输出-1；
+      若a="ab",b="a",输出1； // 字符串长度的差值
+      若a="abcdef",b="a"输出5；	// 字符串长度的差值
+      若a="abcdef",b="abc"输出3；	// 字符串长度的差值
+      若a="abcdef",b="ace"输出-1；	// b.compareTo(c)
       ```
 
-   > 即：参与比较的两个字符串如果首字符相同，则比较下一个字符，直到有不同的为止，返回该不同的字符的asc码差值，如果两个字符串不一样长，可以参与比较的字符又完全一样，则返回两个字符串的长度差值。
+   > 即：参与比较的两个字符串如果首字符相同，则比较下一个字符，直到有不同的为止，返回该不同的字符的ASCII码差值，如果两个字符串不一样长，可以参与比较的字符又完全一样，则返回两个字符串的长度差值。
    >
-   > 提示：查看单个字符的asc码的值(使用int 接收 char字符，再打印输出即可)
+   > 提示：查看单个字符的ASCII码的值(使用int 接收 char字符，再打印输出即可)
+   >
+   > `System.out.println( (int)'a');` 
    >
    > ```java
    > int i ='我';
@@ -256,22 +266,31 @@ String对象的创建很讲究，关键是要明白其原理。[new String("abc"
 
    ​
 
-5. int compareToIgnoreCase(String val) 按字典顺序比较两个字符串，不考虑大小写 
+5. `int compareToIgnoreCase(String val) `按**字典**顺序比较两个字符串，不考虑大小写 
 
-6. boolean startsWith(String value)  检查一个字符串是否以参数字符串开始。
+6. `boolean startsWith`(String value)  检查一个字符串是否以参数字符串开始
 
-7. boolean endsWith(String value)  检查一个字符串是否以参数个字符串结束。
+7. `boolean endsWith`(String value)  检查一个字符串是否以参数个字符串结束
 
 ##### 14.2.1.4.4 字符串查找
 
-1. public int indexOf(String str); 返回 str 在字符串中的第一次出现的下标的位置，如果不存在，返回-1
-2. public int lastIndexOf(String str);返回 str 在字符串中的最后一次出现的下标的位置，如果不存在，返回-1
-3. public char charAt(int index) ;返回字符串的 index 下标位置的字符。
-4. public boolean contains(CharSequence s); 判断字符串中是否包含 s 。
+1. `public int indexOf(String str);` 
+
+   > 返回 str 在字符串中的**第一次**出现的下标的位置，如果不存在，返回-1
+
+2. `public int lastIndexOf(String str);`
+  > 返回 str 在字符串中的最后一次出现的下标的位置，如果不存在，返回-1
+
+3. `public char charAt(int index) ;`
+
+  > 返回字符串的 index 下标位置的字符,  越界的话，返回 -1
+
+4. `public boolean contains(CharSequence s); `
+  > 判断字符串中是否包含 s 。
 
 ##### 14.2.1.4.5 其他类型转换成字符串
 
-在String类中定义了一些静态的重载方法
+在String类中定义了一些**静态的重载方法**
 
 ```java
 public static String valueOf(…);
@@ -293,35 +312,37 @@ public static String valueOf(Object obj);//调用obj的toString()方法得到它
 
   ```java
   int i = 18;
-
   String str = i + "";
   ```
 
 ##### 14.2.1.4.6 String 与 char[] 的 转换
 
-1. char[] toCharArray()；拷贝一份String中的所有字符。返回char[]
-2. new String(c);根据默认编码，将char[]转成String
-3. new String(c,"UTF-8");根据UTF-8编码，将char[]转成String
-4. new String(value, offset, count);根据默认编码，将value(char[])，从offset(包含offset)位置开始，截取count个字符，转成String。
+1. `char[] toCharArray()；`拷贝一份String中的所有字符。返回char[]
+2. `new String(c);`根据默认编码，将char[]转成String
+3. `new String(c,"UTF-8");`根据UTF-8编码，将char[]转成String
+4. `new String(value, offset, count);`根据默认编码，将value(char[])，从offset(包含offset)位置开始，截取count个字符，转成String。
 
 ##### 14.2.1.4.7 String  与 byte[] 的 转换
 
-1. byte[] getBytes()；根据系统默认的编码，得到字符串的byte[]。
-2. byte[] getBytes("UTF-8");根据UTF-8编码， 得到的字符串的byte[]。
-3. new String(bytes);根据默认编码，将byte[]转成String。
-4. new String(bytes,"UTF-8");根据UTF-8编码，将byte[]转成String。
-5. new String(bytes, offset, length);根据默认编码，将bytes(byte[])，从offset(包含offset)位置开始，取count个字节转成String。
-6. new String(bytes, offset, length,"UTF-8");根据UTF-8编码，将bytes(byte[])，从offset(包含offset)位置开始，取count个字节转成String。
+> char 与byte的区别?
+
+> 1. byte[] getBytes()；根据系统默认的编码，得到字符串的byte[]。
+> 2. byte[] getBytes("UTF-8");根据UTF-8编码， 得到的字符串的byte[]。
+> 3. new String(bytes);根据默认编码，将byte[]转成String。
+> 4. new String(bytes,"UTF-8");根据UTF-8编码，将byte[]转成String。
+> 5. new String(bytes, offset, length);根据默认编码，将bytes(byte[])，从offset(包含offset)位置开始，取count个字节转成String。
+> 6. new String(bytes, offset, length,"UTF-8");根据UTF-8编码，将bytes(byte[])，从offset(包含offset)位置开始，取count个字节转成String。
+>
 
 ### 14.2.2 StringBuffer类
 
 #### 14.2.2.1 概述
 
-StringBuffer代表可变的字符序列。
+StringBuffer代表**可变的字符序列**。
 
-StringBuffer称为字符串缓冲区，它的工作原理是：预先申请一块内存，存放字符序列，如果字符序列满了，会重新改变缓存区的大小，以容纳更多的字符序列。
+StringBuffer称为字符串缓冲区，它的工作原理是：预先申请一块内存，存放字符序列，如果字符序列满了，会**重新改变缓存区**的大小，以容纳更多的字符序列。
 
-StringBuffer 与 String 最大的不同是，String是不可变字符串。而StringBuffer是可变字符串对象。
+>  **StringBuffer 与 String 最大的不同是，String是不可变字符串，而StringBuffer是可变字符串对象**。
 
 #### 14.2.2.2 创建StringBuffer对象
 
@@ -329,12 +350,12 @@ StringBuffer 与 String 最大的不同是，String是不可变字符串。而St
 
 ​	StringBuffer类的常用构造方法：
 
-* StringBuffer()。构造一个其中不带字符的字符串缓冲区，初始容量为 16 个字符；
+* StringBuffer()。构造一个其中不带字符的字符串缓冲区，初始容量为 **16 个字符**； // 32字节?
 * StringBuffer(String str)。构造一个字符串缓冲区，并将其内容初始化为指定的字符串内容
 
 > 熟悉 StringBuffer 常用的方法...
 
-Typora 编辑 代码写法：http://www.jianshu.com/p/092de536d948
+
 
 ### 14.2.3 StringBuilder类
 
@@ -432,9 +453,9 @@ StringBuilder与StringBuffer的用法完全一致，唯一的区别是StringBuff
 | \S          | 匹配任何非空白字符。等价于 [^ \f\n\r\t\v]。            |
 | \t          | 匹配一个制表符。等价于 \x09 和 \cI。                  |
 | \v          | 匹配一个垂直制表符。等价于 \x0b 和 \cK。                |
-| \w          | 匹配包括下划线的任何单词字符。等价于'[A-Za-z0-9_]'。        |
+| \w          | 匹配包括下划线的^任何单词字符。等价于'[A-Za-z0-9_]'。       |
 | \W          | 匹配任何非单词字符。等价于 '[^A-Za-z0-9_]'。           |
-| \xn         | 匹配 n，其中 n 为十六进制转义值。十六进制转义值必须为确定的两个数字长。例如，'\x41' 匹配 "A"。'\x041' 则等价于 '\x04' & "1"。正则表达式中可以使用 ASCII 编码。 |
+| \xn         | 匹配 n，其中 n 为十六进制转义值。十六进制转义值必须为确定的两个数字长。例如，'\x41' 匹配 "A"。'\x041' 则等价于 '\x04' & "1"。正则表达式中可以使用 ASCIIII 编码。 |
 | \num        | 匹配 num，其中 num 是一个正整数。对所获取的匹配的引用。例如，'(.)\1' 匹配两个连续的相同字符。 |
 | \n          | 标识一个八进制转义值或一个向后引用。如果 \n 之前至少 n 个获取的子表达式，则 n 为向后引用。否则，如果 n 为八进制数字 (0-7)，则 n 为一个八进制转义值。 |
 | \nm         | 标识一个八进制转义值或一个向后引用。如果 \nm 之前至少有 nm 个获得子表达式，则 nm 为向后引用。如果 \nm 之前至少有 n 个获取，则 n 为一个后跟文字 m 的向后引用。如果前面的条件都不满足，若 n 和 m 均为八进制数字 (0-7)，则 \nm 将匹配八进制转义值 nm。 |
@@ -489,7 +510,7 @@ StringBuilder与StringBuffer的用法完全一致，唯一的区别是StringBuff
 
 24. 验证一年的12个月："^(0?[1-9]|1[0-2])$"正确格式为："01"～"09"和"10"～"12"。
 
-25. 验证一个月的31天："^((0?[1-9])|((1|2)[0-9])|30|31)$"正确格式为；"01"～"09"、"10"～"29"和“30”~“31”。
+25. 验证一个月的31天："^((0?[1-9])|((1|2)[0-9])|30|31)$"正确格式为；"01"～"09"、"10"～"29"和"30"~"31"。
 
 26. 获取日期正则表达式：\\d{4}[年|\-|\.]\d{\1-\12}[月|\-|\.]\d{\1-\31}日?
 
@@ -497,7 +518,7 @@ StringBuilder与StringBuffer的用法完全一致，唯一的区别是StringBuff
 
 27. 匹配双字节字符(包括汉字在内)：[^\x00-\xff]
 
-   评注：可以用来计算字符串的长度（一个双字节字符长度计2，ASCII字符计1）
+   评注：可以用来计算字符串的长度（一个双字节字符长度计2，ASCIIII字符计1）
 
 28. 匹配空白行的正则表达式：\n\s*\r
 
@@ -537,7 +558,7 @@ StringBuilder与StringBuffer的用法完全一致，唯一的区别是StringBuff
 
 
 
-1. 》》》已知字符串："this is a test of java"
+1. 》》》已知字符串："this is a test of Java"
    按要求执行以下操作：
    (1) 统计该字符串中字母s出现的次数
    (2) 取出子字符串"test"
@@ -545,14 +566,18 @@ StringBuilder与StringBuffer的用法完全一致，唯一的区别是StringBuff
    (4) 将字符串中每个单词的第一个字母变成大写， 输出到控制台。
    (5) 用两种方式实现该字符串的倒序输出。(用StringBuffer和for循环方式分别实现)
 
-2. 》》》初始化一个字符串“ABCDEFG”,然后分别在后面跟上自己的小写字母.
+2. 》》》初始化一个字符串"ABCDEFG",然后分别在后面跟上自己的小写字母.
    A(a)B(b)C(c)D(d)E(e)F(f)G(g)
 
 3. 给定字符串数组：
-   String strings[]= {“string”,”starting”,”strong”,”street”, “stir”,”studeng”,”soft”,”sting”}
+   `String strings[]= {"string","starting","strong","street", "stir","studeng","soft","sting"}`
    要求：分别统计以st开头的字符串有多少个，以ng结尾的字符串有多少个
 
-4. 》》》用户输入一个字符串 String str=”123dsgfadsgjlafdjhladDWAdlfgjalDSFADSFDASnhsdaf!@$%@#45324rdsf” 统计字符串大写字母,小写字母,数字，其他字符的个数。
+4. 》》》用户输入一个字符串
+
+    `String str="123dsgfadsgjlafdjhladDWAdlfgjalDSFADSFDASnhsdaf!@$%@#45324rdsf"`
+
+   统计字符串大写字母,小写字母,数字，其他字符的个数。
 
 5. 》》》如下字符串:
    01#张三#20*02#李四#30*03#王五#40。。。。。。，解析每个人分数多少。
@@ -563,4 +588,4 @@ StringBuilder与StringBuffer的用法完全一致，唯一的区别是StringBuff
 
 6. 写一个方法，判断一个字符串是否对称。比如： abcba就是一个对称字符串。
 
-7. 》》编写一个程序，将下面的一段文本中的各个单词的字母顺序翻转。例如: “To be or not to be"，将变成"oT eb ro ton ot eb"。
+7. 》》编写一个程序，将下面的一段文本中的各个单词的字母顺序翻转。例如: "To be or not to be"，将变成"oT eb ro ton ot eb"。

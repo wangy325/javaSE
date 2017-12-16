@@ -30,7 +30,7 @@ public class Class927 {
 	 *  运行的时候发生 nullPointException 错误.
 	 *  找了半天!
 	 *  写进构造器,每次 addStudent(string)的时候呀, 都会新增一个class927实例的啊,难怪..
-	 * @param stu
+	 * @param stus
 	 */
 
 	void addStudent(Student stus) {
@@ -88,7 +88,7 @@ public class Class927 {
 	void updateStudent(String name) {
 		int INDEX = findName(name);
 		if (INDEX < 0)
-			System.out.println("The Student you want to revise does't exist!");
+			System.out.println("ERR: The Student you want to revise does't exist!");
 		else {
 			Scanner Choices = new Scanner(System.in);
 			System.out.println("Choose info you want to revise(1/2/3/0):");
@@ -142,12 +142,12 @@ public class Class927 {
 		}
 	}
 
-	// 删除学生
+	// 删除学生 一次只能操作一个学生
 	void delStudent(String name) {
 		int INDEX = findName(name);
 		if (INDEX < 0)
-			System.out.println("The Student you want to clear does't exist!");
-		else
+			System.out.println("ERR: The Student you want to clear does't exist!");
+		else {
 			for (int i = INDEX; i < student.length - 1; i++) {
 				if (student[i] != null) // 防止数组 [下标] 越界, 而且 null 元素替换也没有意义
 					// 这里有bug,如果数组是 [满] 的, 那么下面的代码会出现 越界 报错
@@ -156,7 +156,8 @@ public class Class927 {
 					student[i] = student[i + 1];
 			}
 		student[student.length - 1] = null;
-
+		System.out.println("deleting student info successful.");
+		}
 	}
 
 	// 打印学生信息

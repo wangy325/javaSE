@@ -26,31 +26,34 @@ public class Int2String {
 		s1 = s1 + 6;
 		System.out.println(s1);
 
-		// 2.通过包装类转换
+		// 2.通过包装类 的静态方法转换
 		String s2 = Integer.toString(i1);
-		System.out.println(s2+1);
-		
+		System.out.println(s2 + 1);
+
 		// 3.通过 [String] 类的 [静态方法] 转换
 		String s3 = String.valueOf(i1);
-		System.out.println(s3+7);
-		
-//		String ---> int
+		/**
+		 *  public static String valueOf(int i) {
+			return Integer.toString(i);
+			}
+		 */
+		System.out.println(s3 + 7);
+
+		// String ---> int
 		String s4 = "100011";
-//		1. 利用 [Integer] 的静态方法
-		int i2 = Integer.parseInt(s4,2);
+		// 1. 利用 [Integer] 的静态方法
+		int i2 = Integer.parseInt(s4, 2);
 		System.out.println(i2);
-//		2. 利用
+		// 2. 利用
 		int i3 = Integer.valueOf("129");
 		Integer i4 = Integer.valueOf("129");
 		/**
 		 *  public static Integer valueOf(String s) throws NumberFormatException {
-        		return Integer.valueOf(parseInt(s, 10));
-    			}
+				return Integer.valueOf(parseInt(s, 10));
+				}
 		 */
 		System.out.println(i3);
 		System.out.println(i3 == i4);
-		
-		
 
 	}
 }
