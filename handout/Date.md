@@ -21,7 +21,7 @@ java.util.Date 类表示特定的瞬间，精确到秒。
 
 ## 15.2 Calendar类
 
-Calendar(日历)类是一个抽象基类，主要用于完成日期字段之间相互操作的功能。即可以设置和获取日期数据的特定部分。
+Calendar(日历)类是一个**抽象基类**，主要用于完成日期字段之间相互操作的功能。即可以设置和获取日期数据的特定部分。
 
 获取Calendar类的实例的方法：
 
@@ -31,9 +31,12 @@ Calendar(日历)类是一个抽象基类，主要用于完成日期字段之间�
 **常用方法：**
 
 1. public int get(int field); 根据给定的日历字段获得当前时间中相应字段的值。如：年、月、日，时、分、秒等；
+
 2. public final void setTime(Date date); 定位日历到指定的时间。
+
 3. public final void setTimeMillis(long millis); 定位日历到指定的时间。
-4. c.getActualMaximum(Calendar.DATE);获取当前日期所在月份的天数
+
+   更多方法查阅:[Java 中的日期和时间类](http://www.runoob.com/java/java-date-time.html)
 
 ## 15.3 SimpleDateFormat类
 
@@ -41,11 +44,17 @@ SimpleDateFormat 是一个以与语言环境有关的方式来格式化和解析
 
 它允许进行格式化（时间 -> 文本）、解析（文本 -> 日期）和规范化。 
 
+图片来源: [菜鸟教程](http://www.runoob.com/java/java-date-time.html)
+
+![Selection_003](/home/wangy325/Pictures/Selection_003.png)
+
+![Selection_004](/home/wangy325/Pictures/Selection_004.png)
+
 * 时间 -> 文本：
 
   ```java
   Date date = new Date(1486866084000L);
-  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒", Locale.CHINA);
+  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒", Locale.CHI![Selection_003](/home/wangy325/Pictures/Selection_003.png)![Selection_003](/home/wangy325/Pictures/Selection_003.png)NA);
   String result = simpleDateFormat.format(date);//格式化时间
   System.out.println(result);
   //将输出：2017年02月12日 10时21分24秒
@@ -77,7 +86,7 @@ SimpleDateFormat 是一个以与语言环境有关的方式来格式化和解析
 
 **java.lang.Math** 类包含的方法进行基本的数字操作，如基本的指数，对数，平方根和三角函数等。
 
-### 类声明
+### 类声明	
 
 以下是java.lang.Math类的声明：
 
@@ -112,7 +121,7 @@ public final class Math extends Object
 
 NumberFormat 是所有数值格式的抽象基类。 该类提供了格式化和分析数值的接口。
 
-```
+```java
  public static void main(String[] args) {
 
         double myNum = 2344.3345566;
