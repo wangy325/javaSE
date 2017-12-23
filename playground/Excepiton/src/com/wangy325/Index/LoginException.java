@@ -10,6 +10,7 @@ package com.wangy325.Index;
  *
  * @decription  自定义一个登录异常
  */
+@SuppressWarnings("serial")
 public class LoginException extends Exception {
 
 	public LoginException() {

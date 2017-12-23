@@ -12,6 +12,7 @@ package com.wangy325.Math;
  * 				2.介绍 NumberFormat 对数据的操作(保留小数位操作)
  * 				3.介绍 DecimalFormat 类
  * 				4.介绍 BigDecimal 类 
+ * 				5.Random 类
  * 
  * @target TODO
  */

@@ -129,7 +129,7 @@ Step 4：调用者处理该自定义的异常
 
 ```java
 public class MyException extends Exception {
-
+  // 直接调用 Exception 的构造方法;
     public MyException() {        super();    } 
 
     public MyException(String msg) {        super(msg);    }
@@ -158,4 +158,4 @@ public String[] createArray(int length) throws MyException {
 
 2. 自定义异常类型 TrigonometricFunctionException extends Exception。并重写相应的构造器。
 
-   再写一个方法void sanjiao(int a,int b,int c)，判断三个参数作为三角形的边事否能构成一个三角形， 如果不能则抛出异常 TrigonometricFunctionException ，显示异常信息"a,b,c不能构成三角 形"，如果可以构成则显示三角形三个边长，在main方法中得到命令行输入的三个整数， 调用此方法，并捕获异常。
+   再写一个方法void sanjiao(int a,int b,int c)，判断三个参数作为三角形的边是否能构成一个三角形， 如果不能则抛出异常 TrigonometricFunctionException ，显示异常信息"a,b,c不能构成三角 形"，如果可以构成则显示三角形三个边长，在main方法中得到命令行输入的三个整数， 调用此方法，并捕获异常。

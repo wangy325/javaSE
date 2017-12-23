@@ -1,4 +1,4 @@
-# 第15天常用类
+# 常用其他类
 
 ## 15.1 Date类
 
@@ -54,7 +54,7 @@ SimpleDateFormat 是一个以与语言环境有关的方式来格式化和解析
 
   ```java
   Date date = new Date(1486866084000L);
-  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒", Locale.CHI![Selection_003](/home/wangy325/Pictures/Selection_003.png)![Selection_003](/home/wangy325/Pictures/Selection_003.png)NA);
+  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
   String result = simpleDateFormat.format(date);//格式化时间
   System.out.println(result);
   //将输出：2017年02月12日 10时21分24秒
@@ -572,7 +572,7 @@ YELLO name: 黄色 index: 4
 
 4. 对 Math类、Random类、Runtime类、System类 的各个类的每一个方法进行测试。
 
-5. 随机生成400 个 [6,50]的整数，统计出生成的每个整数的个数s。输出入格式如下：
+5. 随机生成400 个 [6,50]的整数，统计出生成的每个整数的个数。输出格式如下：
    数字：个数
    例如：
    40：4
