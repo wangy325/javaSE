@@ -3,7 +3,6 @@
  */
 package com.wangy325.Ex1;
 
-
 /**
  * @author wangy325
  *
