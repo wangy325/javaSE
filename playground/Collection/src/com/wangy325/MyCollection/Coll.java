@@ -16,12 +16,12 @@ import java.util.*; // 这个包一定要导入, Collection 和 ArrayList 工具
  * 			!-- ArrayList 实现类
  * 			!-- LinkedList 实现类
  * 			--- Vector 实现类
- * 		---Set 接口 无序集 元素不可重复
+ * 		---Set 接口 无序集合 元素不可重复
  * 			!-- HashSet 实现类
  * 				--- LinkedHashSet
  * 			--- SortedSet 接口
  * 				!-- TreeSet 实现类
- * 		---Queue 接口 队列 有序队列, 元素可重复
+ * 		---Queue 接口 队列
  * 			--- Deque 接口
  * 				---ArrayDeque
  * 				--- LinkedList

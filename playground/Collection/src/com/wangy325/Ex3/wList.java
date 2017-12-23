@@ -71,7 +71,7 @@ public class wList {
 		 * contains() 方法依次比较的是 workList.get(index).eauqals(worker) 是否
 		 * 逻辑相等, 只要有一个相等, 便返回 true
 		 * 
-		 * 对于①表达式, 如果判断出现 NullPointerException 错误, 这是由于重写的 equals 方法
+		 * 对于①表达式, 判断会出现 NullPointerException 错误, 这是由于重写的 equals 方法
 		 * 不够健康, 没有判空!
 		 */
 		System.out.println("集合中是否包含 worker1? " + workList.contains(worker1));
