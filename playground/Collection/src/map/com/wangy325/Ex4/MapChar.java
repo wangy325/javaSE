@@ -48,6 +48,28 @@ public class MapChar {
 			charMap.put(charArr[i], COUNT);
 		}
 	}
+	/**
+	 * 思路2   只需要获取字符串, 无须排序,直接进行操作
+	 * 1. 利用for 循环遍历字符串中的字符
+	 * 2. 如果 map 中 这个字符(key) 对应的value(次数),
+	 * 		那么, 将这个 value 取出来 加 1
+	 * 3. 否则, 直接将这个字符, 次数存入 map 中, 次数为1
+	 */
+	public void writeMap2() {
+		StringList sl = new StringList();
+		String str = sl.getSortedString();
+		for(int i=0;i<str.length();i++) {
+			char cha = str.charAt(i);
+			if(charMap.containsKey(cha)) {
+				int count = charMap.get(cha);
+				count ++;
+				charMap.put(cha, count);
+			}
+			else
+				charMap.put(cha, 1);
+		}
+		
+	}
 
 	// 遍历输出 Map 内容 为了练习利用 key 值遍历
 	// 一般利用 entrySet
@@ -63,7 +85,7 @@ public class MapChar {
 
 	public static void main(String[] args) {
 		MapChar mc = new MapChar();
-		mc.writeMap();
+		mc.writeMap2();
 		mc.printMap();
 
 	}

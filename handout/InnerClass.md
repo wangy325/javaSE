@@ -7,7 +7,7 @@
 
 内部类可以是静态static的，也可用public，default，protected和private修饰。（而外部顶级类即类名和文件名相同的只能使用public和default）。
 
-> 注意：内部类是一个编译时的概念，一旦编译成功，就会成为完全不同的两类。对于一个名为Outer的外部类和其内部定义的名为Inner的内部类。编译完成后出现Outer.class和Outer$Inner.class两类。所以内部类的成员变量/方法名可以和外部类的相同。
+> 注意：内部类是一个编译时的概念，一旦编译成功，就会成为完全不同的两类。对于一个名为Outer的外部类和其内部定义的名为Inner的内部类。编译完成后出现Outer.class和Outer$Inner.class两类。**所以内部类的成员变量/方法名可以和外部类的相同**
 
 ### 12.1.1成员内部类
 
@@ -58,13 +58,17 @@ public class Outer {
     }
  
     public Inner getInner(final String name, String city) { 
-        return new Inner() { 
+        return new Inner() 
+        // 内部内开始
+        { 
             private String nameStr = name; 
  
             public String getName() { 
                 return nameStr; 
             } 
-        }; 
+        }
+      	// 内部内结束
+      ; 
     }
 }
  

@@ -50,7 +50,39 @@ HashSet 是 Set 的实现类，为快速查找设计的Set。存入HashSet的对
 
 如果元素不具备自然顺序的特性，那么不能存入 TreeSet集合。
 
-Set集合不能存放重复的元素，而TreeSet在判断重复条件的情况下，除了 HashSet的规则之后，还会判断comparaTo方法。如果返回0.则识别为重复元素。
+Set集合不能存放重复的元素，而TreeSet在判断重复条件的情况下，除了 HashSet的规则之后，还会判断compareTo方法。如果返回0.则识别为重复元素。
+
+> 1.  如果 元素对象(类)实现了 Comparable 接口, 那么, 将对象存入(add()) TreeSet 中的时候, 元素就已经按照既定排序规则排好了, 而不像 HashSet 那样, 输出都是无序(随机)的;
+>
+> 2. 反过来说, 如果自定义一个没有实现 Comparable 接口的类, 那么这个类无法存入 TreeSet 中;
+>
+>    > 编译器不会报错, 但是运行报错
+>    >
+>    > `java.lang.ClassCastException:`
+>    >
+>    > ` com.wangy325.compare.Employee cannot be cast to java.lang.Comparable`
+>
+> 3.  Set 集合中不能存在相同的元素, 这个 ''相同'' 由 hashCode 和equals 方法同时决定;  在TreeSet中, 由于前面的叙述, TreeSet 是一个有序的集合, 它的 "相同" 还受到 compareTo() 方法的约束:
+>
+>     > ```java
+>     > public int compareTo(Employee e) {
+>     >   if(age > e.age)
+>     >       return 0; 
+>     >   // 这里将比较规则改为: 如果元素年龄大于比较元素的年龄, 则认为它们相等,
+>     >   // 这属于捣蛋的行为, 但是这样做的后果是, TreeSet 会自动删除被比较器认定为
+>     >   // "相等" 的元素
+>     >   if(age < e.age)
+>     >       return -1;
+>     >   if(sal > e.sal)
+>     >       return 1;
+>     >   if(sal < e.sal)
+>     >       return -1;
+>     >   return 0;
+>     > }
+>     > ```
+>
+
+
 
 ## 17.3 Map接口概述    
 
@@ -121,6 +153,9 @@ Comparable 是排序接口。
 若一个类实现了Comparable接口，就意味着“该类支持排序”。  即然实现Comparable接口的类支持排序，假设现在存在“实现Comparable接口的类的对象的List列表(或数组)”，则该List列表(或数组)可以通过 Collections.sort（或 Arrays.sort）进行排序。
 
 此外，“实现Comparable接口的类的对象”可以用作“有序映射(如TreeMap)”中的键或“有序集合(TreeSet)”中的元素，而不需要指定比较器。
+
+> 1. 同 TreeSet 一样, 如果一个自定义类作为Key值, 没有实现 comparable 接口, 也是不能存入 TreeMap 中的,  这就是说, TreeMap 也是一个有序的集合;
+> 2. 通过 `Set<T>  tc  = TreeMapObject.keySet();` 可以获得 键值的 Set 集合(已经排序的)
 
 Comparable 定义
 
