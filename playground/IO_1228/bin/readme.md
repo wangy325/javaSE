@@ -1,9 +1,12 @@
+这是一个测试文档
 
+This is a test file.
 
-演示如何用I/O流读取文件内容
+用来测试 I/O 流中的字节流输入和输出
 
-前提是, 文件是不是必须要为纯文本
+the file test the input and output of byte stream.
 
-好好学习, 天天向上
+字节流是抽象基类, 用于文件操作的分别叫文件输入流和文件输出流
 
-文件结束了
+ByteStream is abstract super class, they are called FileInputStream and FileOutputStream while turns to files operating.
+annaannaanna

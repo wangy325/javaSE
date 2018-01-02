@@ -1,7 +1,5 @@
-/**
- * 
- */
-package com.wangy325.StreamDemo;
+
+package com.wangy325.Stream;
 
 import java.io.*;
 
@@ -40,11 +38,9 @@ public class FileInputStreamDemo {
 				System.out.println(str);
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			// 抛出文件不存在异常
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			// 释放资源

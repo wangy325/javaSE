@@ -117,18 +117,24 @@ IO流的作用就是对文件数据的读和写。
 
 ## 20.4 字节输入流:
 
-###  20.4.1 InputStream类的常用方法
+###  20.4.1 InputStream 抽象基类
 
 1. available() 方法，可以获取与之关联的文件的字节数。
+
 2. int read() 方法，读取输入流。读取输入流的下一个字节，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1。
 
 3. int read(byte[] b) 方法，读取输入流。读取多个字节，存入字节数组b，返回实际读入的字节数。如果到达流的末端，返回-1。
 
-4. int read (byte[] b, int off, int len); 方法，读取输入流。每次读取len个字节，存入字节数组b，从off下标开始存储。如果到达流的末端，返回-1。返回值?
+   > 需要说明的是，一般来讲，返回实际读入的字节数值 和 b.length 的值是一样的，除了最后一次读取返回 -1
+
+4. int read (byte[] b, int off, int len); 方法，读取输入流。每次读取len个字节，存入字节数组b，从off下标开始存储。返回值为每次读取的字节数 len, 如果到达流的末端，返回-1。
+
+   >记住这个参数表
+
 5. close() 方法，关闭当前流，释放与该流相关的资源，防止资源泄露。在带资源的try语句中将被自动调用。关闭流之后还试图读取字节，会出现`IOException`异常。
 
 
-### 20.4.2 InputStream类的子类:文件输入流FileInputStream
+### 20.4.2 FileInputStream 文件输入流
 
 **FileInputStream 用于读取本地文件中的字节数据，继承自InputStream类**
 
@@ -141,7 +147,7 @@ IO流的作用就是对文件数据的读和写。
 
 ##### 20.4.2.1.2 常用方法
 
-1. read() 方法，读取输入流。读取输入流的下一个字节，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1。
+1. read() 方法，读取输入流。读取输入流的**下一个字节**，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1。
 
    ```java
    is = new FileInputStream("test.txt");  
@@ -153,13 +159,17 @@ IO流的作用就是对文件数据的读和写。
 
 2. read(byte[] b) 方法，读取输入流。读取多个字节，存入字节数组b，返回实际读入的字节数。
 
+   > 如前所述, 这里的**多个字节**是指先定义的 byte[] 的长度
+
    ```java
    InputStream is = null;  
    byte[] buffer = new byte[4];//每次读取4个字节
    try {
        is = new FileInputStream("test.txt");  
        is.read(buffer);  
-       System.out.println("available: " + is.available());//观察在读取的过程中，available 值。
+       System.out.println("available: " + is.available());
+     		// Returns an estimate of the number of remaining bytes that can be read (or
+        	// skipped over) from this input stream.
        for (byte b : buffer) {  
            System.out.println((char)b);  
        }
@@ -177,7 +187,7 @@ IO流的作用就是对文件数据的读和写。
 ### 20.5.1 OutputStream类的常用方法
 
 1. write (int b); 将指定的字节写入此输出流。
-2. write(byte[] byte); 将 `b.length` 个字节从指定的 byte 数组写入此输出流。
+2. write(byte[] b); 将 `b.length` 个字节从指定的 byte 数组写入此输出流。
 3. write(byte[] byte, int off, int len); 将指定 byte 数组中从偏移量 `off` 开始的 `len` 个字节写入此输出流。
 4. flush();  用于清空缓存里的数据，并通知底层去进行实际的写操作。(强制把缓存区里面的数据写入到文件)
 5. close();关闭当前流，释放与该流相关的资源。
@@ -207,12 +217,12 @@ IO流的作用就是对文件数据的读和写。
    ```java
    try {
    	File file = new File("test.txt");
-   	OutputStream fos = new FileOutputStream(file);
-   	byte b = 'a';
+   	OutputStream fos = new FileOutputStream(file);  // 通过 File 创建一个输出流
+   	byte b = 'a'; // 注意 byte 和 char 的区别
    	fos.write(b);
    	fos.flush();
    	fos.close();
-   }...
+   }
    ```
 
    结果：![](http://ojx4zwltq.bkt.clouddn.com/17-2-16/21332407-file_1487215376635_92a0.png)
@@ -253,7 +263,7 @@ IO流的作用就是对文件数据的读和写。
 
 ## 20.6 字节缓冲流
 
-BufferedInputStream与BufferedOutputStream分别是FilterInputStream类和FilterOutputStream类的子类，实现了装饰设计模式。提高了读写性能。
+BufferedInputStream与BufferedOutputStream分别是FilterInputStream类和FilterOutputStream类的子类，实现了**装饰设计模式**。提高了读写性能。
 
 ### 20.6.1字节输入缓冲流 BufferedInputStream
 
