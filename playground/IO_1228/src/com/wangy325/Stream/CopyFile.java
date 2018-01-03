@@ -23,6 +23,7 @@ public class CopyFile {
 	 *  		// 将 readme.md 拷贝至 /home/wangy325/Documents
 	 *  2. 异名文件拷贝
 	 *  	2.1 文件a , 文件b --> 覆写(false) 追加(true)
+	 *  		// 只要保证路径正确 就ok 了
 	 */
 	
 
@@ -45,7 +46,7 @@ public class CopyFile {
 			/**
 			 * 0. 建立 fos 和文件的联系的时候, 如果目录名正确,
 			 * 	  就会直接与文件建立联系:
-			 * 1. 如果我文件不存在, 则会创建一个空文件
+			 * 1. 如果我文件不存在, 则会创建一个空文件 (file.length = 0L)
 			 * 	  这导致,后面的 if 语句判断 文件是否存在的时候出现问题.
 			 * 2. debug 显示, 建立 FileOutputStream 的时候, 会先把
 			 *    已经存在的文件内容清空.
@@ -55,7 +56,6 @@ public class CopyFile {
 			 * 4. 如果 append 为 true, 那么原文件的内容不会被清除.
 			 * 
 			 * 5. 这里把 FileOutputStream() 初始化语句放在 if 语句内
-			 * 
 			 */
 			// 文件输入流
 			fis = new FileInputStream(file);
@@ -67,8 +67,8 @@ public class CopyFile {
 			}
 			// 输入完成, 输出流开始
 			byte[] bufferout = str.getBytes();
-			// 先不链接 fos 和 文件
-			if (dir.length() != 0L) {
+			// 先不链接 fos 和 文件, 而判断文件在运行之前是否存在
+			if (dir.exists()) {
 				System.out.println("文件已经存在,是否覆盖已有文件(y/n)?");
 				Scanner console = new Scanner(System.in);
 				String choice = console.next();
@@ -106,8 +106,8 @@ public class CopyFile {
 
 	// /home/wangy325/Desktop:readme.me
 	public static void main(String[] args) {
-//		copy("src/readme.md", "/home/wangy325/Desktop");
-		copy ("/home/wangy325/Documents/1173857931.jpg","src");
+		copy("src/readme.md", "/home/wangy325/Desktop");
+//		copy ("/home/wangy325/Documents/1173857931.jpg","src");
 
 	}
 

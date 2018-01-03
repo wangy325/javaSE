@@ -3,13 +3,27 @@ package com.wangy325.IndexIO;
 import java.io.File;
 
 /**
- * 
  * @author wangy325
  *
  * @date Dec 21, 2017  2:48:45 PM
  *
- * @decription    File 类
- * 
+ * @decription
+ * 			简单介绍文件(File)对象的创建和 File 类的常用方法:   
+ * 			I/O 流:
+ * 				1. 字节流
+ * 					--> 文件流
+ * 						FileInputStream() / FileOutputStream()
+ * 					---> 缓冲流 (提高效率, 减少磁盘访问次数)
+ * 						BufferedInputStream() / BufferedOutStream()
+ * 					---> 对象流
+ * 						ObjectInputStream() / ObjectOutputStream()
+ * 				2. 字符流 (主要用于操作文本文件)
+ * 					---> 文件流
+ * 						FileRead() / FileWrite()
+ * 					---> 缓冲流
+ * 						BufferedReader() / BufferedWriter()
+ * 					---> 转换流
+ *						InputStreamReader() / OutputStreamReader() 
  */
 public class ClassFile {
 	public static void main(String[] args) {
