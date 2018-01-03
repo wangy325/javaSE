@@ -31,7 +31,7 @@ public class Letter {
 	public File newDir() {
 		File dir = new File("/home/wangy325/Desktop/Letter");
 		if (dir.isDirectory()) {
-			// System.out.println("目录已经存在..");
+			 System.out.println("目录已经存在..");
 		} else if (dir.mkdir()) {
 			// System.out.println("目录创建成功");
 		}
@@ -65,7 +65,7 @@ public class Letter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				if (fos != null && bos != null) {
+				if (fos != null) {
 					try {
 						bos.close();
 						fos.close();
@@ -108,7 +108,7 @@ public class Letter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-				if (fis != null && bis != null) {
+				if (fis != null ) {
 					try {
 						fis.close();
 						bis.close();

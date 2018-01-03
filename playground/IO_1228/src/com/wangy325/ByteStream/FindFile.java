@@ -28,8 +28,9 @@ public class FindFile {
 
 	// 递归查找目录下的文件, 返回一个文件集合
 	ArrayList<File> files = new ArrayList<File>();
+
 	public ArrayList<File> listFiles(File dir) {
-//		File[] list = dir.listFiles();
+		// File[] list = dir.listFiles();
 		for (File f : dir.listFiles()) {
 			if (f.isFile()) {
 				files.add(f);
