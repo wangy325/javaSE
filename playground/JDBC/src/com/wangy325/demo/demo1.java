@@ -24,7 +24,14 @@ import java.util.Scanner;
  * 
  */
 public class demo1 {
-
+	private static Scanner console;
+	
+	/**
+	 * close Scanner console
+	 */
+	public static void consoleShut() {
+		console.close();
+	}
 	public static void main(String[] args) {
 		// build connection
 		addRow();
@@ -109,17 +116,24 @@ public class demo1 {
 				// e1.printStackTrace();
 			}
 		}
-		System.out.println("请输入学生性别:");
+		System.out.println("请输入学生性别(female/male):");
 		String gender = getInput();
 		System.out.println("请输入学生生日(yyyy-mm-dd):");
 		String birth = getInput();
+		consoleShut();
+		/**
+		 * 日期验证: 1.输入指定格式 19911106 或者 1991-11-12 添加成功
+		 * 			2.输入其他非指定格式还要验证
+		 */
 		try {
 			st = conn.createStatement();
 			String sql = "insert into stu(sname,sage,sgender,sbirth) values" + "('" + name + "'," + age + ",'" + gender
 					+ "'," + "to_date('" + birth + "','yyyy-mm-dd'))";
 			/**
 			 * 利用 SQL 语句像数据表中添加 Date 类型的数据
-			 * 用到了 sql 中的 to_date('string','format')函数
+			 * 用到了 SQL 中的 to_date('string','format')函数
+			 * executeUpdate() 方法会执行SQL语句对数据表的 [添加] [删除] 和 [更新] 
+			 * 操作, 并且会返回一个 int 值, 这个值是 [对SQL语句操作作出响应的行数]
 			 */
 			// System.out.println(sql);
 			int rows = st.executeUpdate(sql);
@@ -136,11 +150,12 @@ public class demo1 {
 	 * @return the data of each column, in the form of STRING.
 	 */
 	private static String getInput() {
-		Scanner console = new Scanner(System.in);
+		console = new Scanner(System.in);
 		String getIn = console.next();
 		// 不能关闭?
 		// console.close();
 		// 如果没有输入, 如何默认为该单行单列的值为null?
+		// console.next() 不能接收 null ...
 		return getIn;
 	}
 }
