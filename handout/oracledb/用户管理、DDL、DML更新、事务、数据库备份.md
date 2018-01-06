@@ -1,0 +1,952 @@
+# 29 用户管理、DDL、DML更新、事务、数据库备份
+
+## 29.1 Oracle用户管理（管理员权限）
+
+```mysql
+conn system/manager;-- 只有管理员才有权限管理用户。
+```
+
+### 29.1.1用户创建
+
+```mysql
+create user 用户名 identified by 密码 ;
+```
+
+### 29.1.2 用户授权
+
+```mysql
+grant connect to 用户名; -- 允许连接
+grant resource to 用户名;  -- 允许DDL和DML
+grant resource,connect to 用户名; -- 允许连接和允许操作数据
+```
+
+### 29.1.3 用户删除
+
+```mysql
+drop user 用户名 cascade; 
+```
+
+
+
+> 提示：用户管理、权限管理、角色管理是DBA的职责：
+>
+> 如有兴趣！自行翻阅：http://blog.csdn.net/junmail/article/details/4381287
+
+
+
+## 29.2 SQL（DDL）
+
+### 29.2.1 Oracle 数据类型
+
+1. 字符类型
+   - CHAR：一个定长字符串，当位数不足自动用空格填充来达到其最大长度。
+     - 如非NULL的CHAR(12)总是包含12字节信息。CHAR字段最多可以存储2,000字节的信息。
+   - VARCHAR2(Oracle 特有)：目前这也是VARCHAR 的同义词。这是一个变长字符串，与CHAR 类型不同，它不会用空格填充至最大长度。
+     - VARCHAR2(12)可能包含0～12字节的信息。VARCHAR2最多可以存储4,000 字节的信息。
+     - CHAR和VARCHAR2的比较
+       - CHAR(4) "A" 实际在数据库中存储为"A "，"ABCDE"超长报错
+       - VARCHAR2(4) "A"存储的还是"A"，"ABCDE"超长报错。
+     - 汉字：每个汉字占多少字节，要看具体的编码方式，如UTF-8（1-3字节）、GB2312（2字节）、GBK（2字节）、GB18030（1、2、4字节）
+2. 数字类型
+   - NUMBER：该数据类型能存储精度最多达38位的数字。每个数存储在一个变长字段中，其长度在0～22字节之间。
+   - Oracle的NUMBER类型精度很高， 远远高于许多编程语言中常规的FLOAT和DOUBLE类型。
+   - NUMBER( p,s ) p表示精度（总长度） s表示小数位置且四舍五入
+   - NUMBER(10,3) 10是总长度，3是小数位数的长度
+     - 123.456 正确
+     - 123.4567 ：将存储为123.457
+     - 12345679.899 ：精度超长了，10是总长度，3是小数位， 整数位为10-3=7位
+     - NUMBER(10)==NUMBER(10,0)； 类似 Java.lang.Integer
+     - NUMBER(19)==NUMBER(19,0)；类似  java.lang.Long
+3. 日期类型
+   - DATE：一个7字节的定宽日期/时间数据类型。其中总包含7个属性，包括：世纪、世纪中哪一年、月份、月中的哪一天、小时、分钟和秒。
+   - TIMESTAMP：一个7 字节或12.字节的定宽日期/时间数据类型。它与DATE 数据类型不同，因为TIMESTAMP 可以包含小数秒（fractional second）；带小数秒的TIMESTAMP 在小数点右边最多可以保留9位。
+4. 二进制及大文本数据
+   - CLOB：（Character Large Object）大文本数据。在Oracle9i及以前的版本中， 这种数据类型允许存储最多4GB的数据， 在Oracle 10g及以后的版本中允许存储最多（4GB）×（数据库块大小）字节的数据。CLOB包含要进行字符集转换的信息。这种数据类型很适合存储纯文本信息。
+   - BLOB（一般不使用）： (binary large object) 二进制数据。在Oracle9i及以前的版本中， 这种数据类型允许存储最多4GB的数据， 在Oracle 10g及以后的版本中允许存储最多（4GB）×（数据库块大小）字节的数据。BLOB包含不需要进行字符集转换的“二进制“数据，如果要存储电子表格、字处理文档、图像文件等就很适合采用
+
+### 29.2.2 表的管理（创建表、修改表、删除表）
+
+#### 29.2.2.1 数据表的创建(*本小节学完跳转到29.3 表数据的更新*)
+
+创建Oracle 数据表的 基本格式：
+
+```mysql
+CREATE TABLE 表名称(
+	列名称 类型 [DEFAULT 默认值],
+	列名称 类型 [DEFAULT 默认值],
+	列名称 类型 [DEFAULT 默认值],
+	列名称 类型 [DEFAULT 默认值],
+	列名称 类型 [DEFAULT 默认值]
+);
+-- 注意 最后一个列不能有 , 号
+```
+
+1. 创建一个表：表名为  student，编号 mid 数字类型，名字name 字符类型(20) 默认值'人民'，年龄 数字类型(3)，生日birthday DATE类型 默认值系统时间，个人简介node 大文本类型。
+
+   ```mysql
+   CREATE TABLE student(
+   	mid NUMBER,
+   	name VARCHAR2(20) DEFAULT '人民',
+     	age NUMBER(3),
+     	birthday DATE DEFAULT SYSDATE,
+     	note CLOB
+   );
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-18/49095485-file_1492524870420_1329c.png)
+
+> 可以通过 
+>
+> ```mysql
+> SELECT * FROM tab;
+> ```
+>
+> 查询表是否已经创建。
+>
+> 还可以通过
+>
+> ```mysql
+> DESC student;
+> ```
+>
+> 观察表的结构。
+
+##### >>>>>>本小节学完跳转到 *29.3 表数据的更新* <<<<<<<
+
+#### 29.2.2.2 数据表的删除
+
+删除表的 SQL语法：
+
+```mysql
+DROP TABLE 表名称;
+```
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/89828466-file_1492577817286_13f3b.png)
+
+> 注意：数据库的删除比数据删除更严谨，表的删除只能一张一张删除，任何数据库都没有全部删除表的可能，并且删除一张数据表后，数据库会有相应的记录。
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/70073731-file_1492577844669_103d1.png)
+
+##### 26.5.2.1.1数据表的删除(闪回技术Oracle特有)
+
+数据表的删除实际上是将数据表放入一个类似 Window回收站的 回收机制中。
+
+1. 查看 回收站的数据表
+
+   ```mysql
+   SELECT * FROM user_recyclebin;-- 数据太多
+
+   -- 主要观察数据列：original_name,object_name,droptime
+
+   SELECT original_name,object_name,droptime FROM user_recyclebin;
+   --因为数据太长，所以格式化一下
+   COL original_name FOR A26;
+   COL object_name FOR A26;
+   COL droptime FOR A26;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/17631426-file_1492578922795_6d88.png)
+
+2. 通过 回收站恢复一张被删除的数据表（闪回）
+
+   ```mysql
+   FLASHBACK TABLE student TO BEFORE DROP;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/87265426-file_1492578973385_65f6.png)
+
+3. 删除回收站的一张数据表(意义不大)
+
+   ```mysql
+   PURGE TABLE student;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/48563870-file_1492579284884_16213.png)
+
+4. **清空回收站的所有数据表**
+
+   ```mysql
+   PURGE RECYCLEBIN;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/46183631-file_1492579362236_d25d.png)
+
+5. **彻底删除一张数据表**(不经过回收站)
+
+   ```mysql
+   DROP TABLE student PURGE;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/88418979-file_1492579444451_16df8.png)
+
+6. ​
+
+
+
+#### 29.2.2.3 数据表的修改（了解，强烈不建议使用）
+
+创建一张表作为修改表的测试：
+
+```mysql
+CREATE TABLE student(
+	mid NUMBER,
+	name VARCHAR2(20) DEFAULT '人民'
+);
+INSERT INTO student (mid,name) VALUES (8888,'张三');
+INSERT INTO student (mid,name) VALUES (9999,'李四');
+```
+
+##### 29.2.2.3.1 增加数据列
+
+增加表中数据列的语法：
+
+```mysql
+ALTER TABLE 表名称 ADD(
+	列名称 类型 [DEFAULT 默认值],
+	列名称 类型 [DEFAULT 默认值],
+	...
+);
+```
+
+1. 向student 表中新增一列(无默认值)
+
+   ```mysql
+   ALTER TABLE student ADD(
+   	email VARCHAR2(30)
+   );
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/31703570-file_1492600629347_3204.png)
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/58810298-file_1492600995866_a553.png)
+
+   > 注意：增加之后的列，所有数据都是 null
+
+2. 向student 表中新增一列(并设置 默认值)
+
+   ```mysql
+   ALTER TABLE student ADD(
+   	sex VARCHAR2(5) DEFAULT '男'
+   );
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/66114931-file_1492601029666_2465.png)
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/60986647-file_1492601050424_10a5f.png)
+
+   > 注意：因为新增的列存在默认值，所以新增后的列的所有数据都是默认值。.
+
+##### 29.2.2.3.2 修改数据列
+
+修改表中数据列的数据类型或默认值等 语法：
+
+```mysql
+ALTER TABLE 表名称 MODIFY(
+	列名称 类型 [DEFAULT 默认值],
+	列名称 类型 [DEFAULT 默认值]
+	...
+)；
+```
+
+修改表中数据列的列名称 语法：
+
+```mysql
+ALTER TABLE 表名 RENAME COLUMN 现列名 TO 新列名;
+```
+
+1. 将数据列name 的长度修改为20，默认值为'人民';
+
+   ```
+   ALTER TABLE student MODIFY(
+   	name VARCHAR2(20) DEFAULT '人民'
+   );
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/50175799-file_1492601371218_ede2.png)
+
+2. 将数据列 email 的名称修改为 youXiang
+
+   ```mysql
+   ALTER TABLE student RENAME COLUMN email TO youXiang;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/47993508-file_1492601885710_8593.png)
+
+##### 29.2.2.3.3 删除数据列
+
+删除表中数据列的语法：
+
+```mysql
+ALTER TABLE 表名称 DROP COLUMN 列名称;
+```
+
+1. 删除 性别 sex 列。
+
+   ```mysql
+   ALTER TABLE student DROP COLUMN sex;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/43742470-file_1492601573656_43cd.png)
+
+
+
+**提示：**在实际开发中，几乎可以讲以上修改操作彻底遗忘，因为在任何的开发之中，数据表结构一旦设计确定了，开发中基本就很难再修改了。如果开发中真有需求需要动表结构，只有一个原则；将表删除后重建。
+
+
+
+#### 
+
+#### 29.2.2.4 数据表的重命名（了解）
+
+语法：
+
+```
+RENAME 旧表名 TO 新表名;
+```
+
+#### 29.2.2.5 数据表的截断（了解）
+
+如果现在需要清空一张数据表的记录，那么我们首先想到的肯定是执行 DELETE 操作，但是DELETE操作实际上并没有完全删除数据，表中所占的资源并不会马上被释放。我们依然可以使用 rollback 回滚回复被删除的数据。
+
+那么有没有一种方式，可以讲数据表所占用的全部资源都清空释放掉？
+
+那么就需要使用截断表的操作：
+
+```mysql
+TRUNCATE TABLE 表名称;
+```
+
+#### 29.2.2.6 数据表的复制（了解）
+
+复制表的基本语法：
+
+```mysql
+CREATE TABLE 表名称 AS 子查询;--Oracle 特有语法
+```
+
+严格来讲，这只是根据子查询返回的虚拟表结构来创建数据表，并且将子查询中的保存到新建的数据表中。
+
+1. 复制一张只有 30 部门的 emp数据表。
+2. 复制一张只有 empno,ename,job 三个字段的emp数据表。
+
+> 注意：以上复制表基本都有数据产生。如果只是想复制一张数据表的结构，而不需要复制数据的话，可以在子查询中加上条件 WHERE 1=2; 条件不成立 则不会返回任何数据行....
+
+### 29.2.3 数据库表约束
+
+数据库在设计表的时候，一定要为表设计约束，为了保证数据表中的数据是合法有效的数据。
+
+表的约束是保证数据完整性的一种手段，在SQL语法之中约束一共分为六种：
+
+* 数据类型约束（往往会被忽略的约束条件）
+* 非空约束
+* 唯一约束
+* 主键约束
+* 检查约束
+* 外键约束（最麻烦）
+
+#### 29.2.3.1 数据类型约束
+
+这个没什么好讲的，好比如java中的数据类型一样。如果字段类型是 数字就不能存放字符串。以此类推。
+
+#### 29.2.3.2 非空约束 （NOT NULL，NK(简称)）
+
+非空约束指的是要求数据表中的某个列的数据内容不允许为空null。
+
+设置非空约束的语法：`NOT NULL`
+
+```mysql
+DROP TABLE test PURGE;
+CREATE TABLE test(
+	mid NUMBER,
+	name VARCHAR2(30) NOT NULL
+);
+```
+
+**正确示例：**
+
+```mysql
+INSERT INTO test(mid,name) VALUES(12,'张三');
+```
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/26309679-file_1493122744565_3a72.png)
+
+**错误示例：**
+
+```mysql
+INSERT INTO test(mid) VALUES(12);
+-- INSERT INTO test(mid,name) VALUES(12,null);-- 写法同上
+```
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/13332584-file_1493121505861_1690e.png)
+
+> **注意：**此时提示错误信息 很明显告诉我们 具体的用户的具体某张数据表的某个列除了错误！！
+
+#### 29.2.3.3 唯一约束 （UNIQUE，UK）
+
+唯一约束指的是 数据表中的某个列的数据不允许重复（除了null）。
+
+设置唯一约束的语法二：`UNIQUE`
+
+```mysql
+DROP TABLE test PURGE;
+CREATE TABLE test(
+	mid NUMBER,
+	name VARCHAR2(30) NOT NULL,
+  	email VARCHAR2(50) UNIQUE
+);
+```
+
+**正确示例：**
+
+```mysql
+INSERT INTO test(mid,name) VALUES(12,'张三');
+INSERT INTO test(mid,name,email) VALUES(13,'李四',null);
+INSERT INTO test(mid,name,email) VALUES(15,'王五','yztc@qq.com');
+```
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/58918238-file_1493123568165_1660e.png)
+
+**错误示例：**
+
+```mysql
+INSERT INTO test(mid,name,email) VALUES(16,'老六','yztc@qq.com');
+INSERT INTO test(mid,name,email) VALUES(17,'赵七','yztc@qq.com');
+```
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/59544687-file_1493123612384_178c0.png)
+
+> 注意：此时提示错误信息并不明显。
+>
+> 因为我们设置约束其实也是一张数据表对象。可以通过数字字典查看错误信息
+>
+> * SELECT * FROM user_constraints; 查看约束出错的表
+> * SELECT * FROM user_cons_columns; 查看约束出多的列
+>
+> 数字字典一般是 DBA 数据库管理员操作的范畴。我们是开发者，如果出错这么处理查看错误，这效率肯定要废掉。
+>
+> 解决出错信息不明显的为题：**>>>29.2.3.3.1**
+
+##### 29.2.3.3.1 解决约束错误信息提示不明显的问题
+
+设置唯一约束的语法二：
+
+```mysql
+DROP TABLE test PURGE;
+CREATE TABLE test(
+	mid NUMBER,
+	name VARCHAR2(30) NOT NULL,
+  	email VARCHAR2(50) ,
+  	CONSTRAINT uk_test_eamil UNIQUE(email) 
+);
+-- 设置唯一约束   CONSTRAINT uk_test_eamil该约束名称 UNIQUE(约束列名)
+```
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/52022253-file_1493126111259_1d48.png)
+
+**此时错误信息就可以根据自己制定的约束名称 轻易的看出错误信息！**
+
+#### 29.2.3.4 主键约束（PRIMARY KEY，PK）
+
+主键约束 = 唯一约束 + 非空约束，指的是 数据表中的某个列的数据不能为空null也不允许重复。
+
+设置主键约束的语法一（约束对象自动生成）：
+
+```mysql
+DROP TABLE test PURGE;
+CREATE TABLE test(
+	mid NUMBER PRIMARY KEY,
+	name VARCHAR2(30) NOT NULL
+);
+```
+
+设置主键约束的语法二（自定义约束对象）：
+
+```mysql
+DROP TABLE test PURGE;
+CREATE TABLE test(
+	mid NUMBER,
+	name VARCHAR2(30) NOT NULL,
+  	CONSTRAINT pk_test_mid PRIMARY KEY(mid) 
+);
+```
+
+**正确示例：**
+
+```mysql
+INSERT INTO test(mid,name) VALUES(12,'张三');
+INSERT INTO test(mid,name) VALUES(13,'张三');
+INSERT INTO test(mid,name) VALUES(14,'李四');
+```
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/67981870-file_1493127203094_1500c.png)
+
+**错误示例：**
+
+```mysql
+INSERT INTO test(mid,name) VALUES(14,'老六');
+INSERT INTO test(mid,name) VALUES(14,'赵七');
+INSERT INTO test(name) VALUES('张三');
+```
+
+​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/80693430-file_1493127311820_159d2.png)
+
+**所以说，**主键约束其实就是  非空约束 + 唯一约束。
+
+
+
+> **注意：**
+>
+> *正常情况下一张表只会设置一个主键。但是SQL语法支持在一张表中设置多个主键，多个主键之间用“,”逗号隔开。但一旦设置多个主键的表，必须满足多个列的数据完全相同才会触发约束条件。所以正常开发中我们几乎不会考虑使用多个主键设计！*
+
+#### 29.2.3.5 检查约束（CHECK，CK）
+
+检查约束指的是在进行数据更新操作的时候设置一些过滤条件。
+
+例如：
+
+1. 在设置年龄的时候设置范围 0~120;
+2. 在设置性别的时候只能是 男或女;等...
+
+设置主键约束的语法
+
+```mysql
+DROP TABLE test PURGE;
+CREATE TABLE test(
+	mid NUMBER PRIMARY KEY,
+	name VARCHAR2(30) NOT NULL,
+  	age NUMBER(3)
+  	CONSTRAINT ck_test_age CHECK(age BETWEEN 0 AND 120) 
+);
+-- 或
+DROP TABLE test PURGE;
+CREATE TABLE test(
+	mid NUMBER PRIMARY KEY,
+	name VARCHAR2(30) NOT NULL,
+  	sex VARCHAR2(4) CHECK(sex IN('男','女')) 
+);
+
+```
+
+
+
+**提示：**实际上检查约束 就是在设置该属性值之前对其做一个 WHERE 条件判断。
+
+**注意：**虽然有检查约束这种概念，但是在实际开发中是否应该使用检查约束？
+
+#### 29.2.3.6 外键约束(完整约束)（FOREIGN，FK）（难点）
+
+##### 29.2.3.6.1 外键约束的前提条件
+
+外键约束是建立在两张表的基础上！
+
+1. 例如：scott用户的数据表中。dept与emp表。一个部门有多个雇员信息。那么此时dept称为主表，emp称为子表。 
+
+2. 例如：班级与学生，一个班级有多个学生。那么班级表就是主表的概念，学生表就是子表的概念。
+
+   ...
+
+##### 29.2.3.6.2 外键约束的概念
+
+外键约束指的是限制子表中的某一个列的数据约束与主表的某一个数据列。
+
+1. 例如：有雇员入职的时候，只能入职公司现有的部门。即：部门不存在则不能入职。
+2. 例如：有学生要进班听课，只能进入现在开班的班级。即：班级都不存在，怎么进入听课？
+
+##### 29.2.3.6.3 外键约束的具体实现
+
+```mysql
+DROP TABLE class PURGE;
+CREATE TABLE class(
+	cid NUMBER,-- 班级编号
+	name VARCHAR2(30) NOT NULL,-- 班级名称
+  	CONSTRAINT pk_class_cid PRIMARY KEY(cid)  -- 班级编号主键
+);
+DROP TABLE student PURGE;
+CREATE TABLE student(
+	sid NUMBER,-- 学生编号
+	name VARCHAR2(30) NOT NULL,-- 学生姓名
+  	cid NUMBER , -- 班级编号
+  	CONSTRAINT pk_student_sid PRIMARY KEY(sid), -- 学生编号主键
+	-- 设置未见外键约束
+  	CONSTRAINT fk_student_class_sid FOREIGN KEY(cid) REFERENCES class(cid) ON DELETE SET NULL
+);
+-- CONSTRAINT 约束名称 FOREIGN KEY(子表受约束列) REFERENCES 父表名称(父表被约束列)
+```
+
+**正确示例：**
+
+```mysql
+INSERT INTO class(cid,name) VALUES (2,'java1702');
+INSERT INTO class(cid,name) VALUES (1,'HTML1703');
+INSERT INTO class(cid,name) VALUES (5,'Hava1701');
+INSERT INTO student(sid,name,cid) VALUES (23,'张三',2);
+INSERT INTO student(sid,name,cid) VALUES (25,'李四',2);
+INSERT INTO student(sid,name,cid) VALUES (67,'张伟',2);
+INSERT INTO student(sid,name,cid) VALUES (12,'小林',1);
+INSERT INTO student(sid,name,cid) VALUES (32,'小东',5);
+INSERT INTO student(sid,name,cid) VALUES (54,'益达',2);
+INSERT INTO student(sid,name,cid) VALUES (62,'热吧',2);
+INSERT INTO student(sid,name,cid) VALUES (37,'老六',5);
+INSERT INTO student(sid,name,cid) VALUES (83,'赵七',5);
+```
+
+![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/34797860-file_1493131774478_8c0f.png)
+
+**错误示例：**
+
+```mysql
+-- 在上诉正确的示例 数据中，继续执行该语句。
+INSERT INTO student(sid,name,cid) VALUES (99,'老李',10);-- 根本不存在 10班级
+```
+
+![](http://ojx4zwltq.bkt.clouddn.com/17-4-25/42259710-file_1493131931193_de2e.png)
+
+因为更新 子表数据的时候，会先检查 cid=10 的值 是否存在 父表的 cid列中。不存在，则出现 “未找到父项关键字”。**字就是所谓的 外键约束（完整约束）**。
+
+##### 29.2.3.6.4 外键约束的限制
+
+1. **限制一：**父表中作为子表关联的外键字段，必须设置为主键约束或者是唯一约束。
+
+2. **限制二：**正常情况下：如果表中存在有外键关系，则：在删除父表前必须先删除子表，否则父表无法被删除。
+
+   * 开发中强烈建议按照正常情况逻辑编写程序。
+
+   * 但有些学员可能会出现这样的情况：在两张表A和B中。A表有B表的外键，而B表也有A表的外键，那么正常情况下两张表永远删不掉了。
+
+   * **强制删除约束表：(不到万不得已的不要使用此类操作)**
+
+     ```mysql
+     DROP TABLE 表名 CASCADE CONSTRAINT;-- 被删除的表只能加入回收站
+     -- 因为该语法不能和强制删除表语法一起使用
+     -- DROP TABLE student PURGE; 只能二选
+     ```
+
+3. **限制三：**正常情况下：如果表中存在关联数据，即：父表中的数据被子表中的数据关联。则：在删除父表数据之前必须先删除子表数据，否则父表的数据无法被删除。
+
+   * 如果父表的数据被很多张数据表关联，那么就需要在删除多张关联该数据的表的数据后才能删除父表的数据，此时的操作就很不方便了。我们可以通过配置数据的级联操作解决相关问题：
+
+     1. 删除父表数据后相关的子表的数据也随之删除：
+
+        * 在外键约束后 加上语句：`ON DELETE CASCADE`
+
+        * ```mysql
+          CONSTRAINT 约束名称 FOREIGN KEY(子表受约束列) REFERENCES 父表名称(父表被约束列) ON DELETE CASCADE
+          ```
+
+     2. 删除父表数据后相关的子表的数据约束列清空：
+
+        * 在外键约束后 加上语句：`ON DELETE SET NULL`
+
+        * ```mysql
+          CONSTRAINT 约束名称 FOREIGN KEY(子表受约束列) REFERENCES 父表名称(父表被约束列) ON DELETE SET NULL
+          ```
+
+   > 提示：是否选择数据的级联操作，根据实际开发的数据而定！
+
+
+
+## 29.3 表数据的更新(DML 更新语句)
+
+在SQL语句的定义中，DML一共分为两类：数据查询、数据更新；对于据查询在此之前我们已经掌握了，而数据更新主要针对数据的 增加、修改、删除三种操作。
+
+### 29.3.1数据更新准备工作
+
+对于 scott中的数据在以后还会有其他的用途，所以为了方便起见，建议不要去更改emp表或 dept表的数据。我们将以emp表做一个基本的复制。
+
+**将emp表复制为 myemp表（先不管如何复制，直接copy即可）**
+
+```mysql
+CREATE TABLE myemp AS SELECT * FROM emp;
+```
+
+![](http://ojx4zwltq.bkt.clouddn.com/17-4-19/27408719-file_1492606709973_142bf.png)
+
+
+
+### 29.3.2 添加表中数据
+
+实现数据表新增数据行的操作语法：
+
+```mysql
+INSERT INTO 表名 [(列名1,列名2,…)] VALUES (值1,值2,…);
+```
+
+**新增数据内容要求：**
+
+1. 字符串：使用 单引号 ' 声明，例如： 'hello'
+2. 数字：直接编写；例如： 123
+3. 日期：可选择当前日期 SYSDATE，或使用 TO_DATE(‘2017-05-05’,'yyyy-mm-dd') 根据日期格式转换
+
+**代码示例：**
+
+1. 使用**完整格式(写上增加数据列的名称)**向 myemp表中插入一行数据：
+
+   ```mysql
+   INSERT INTO myemp (ename,empno,job,mgr,hiredate,sal,comm,deptno) 
+   VALUES ('张三',8888,'人事',7369,TO_DATE('2010-10-10','yyyy-mm-dd'),3500.0,0,40);
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-20/60658126-file_1492691766497_13fd3.png)
+
+2. 使用**简化格式(省略增加数据列的名称)**向 myemp表中插入一行数据：
+
+   - 使用简化格式新增数据的时候，数据值 必须和 myemp 表的字段 按顺序一一对应。
+
+   ```mysql
+   INSERT INTO myemp 
+   VALUES (9999,'李四','前台',7369,TO_DATE('2010-10-12','yyyy-mm-dd'),3500.0,0,40);
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-20/4171489-file_1492691784929_13dab.png)
+
+   ​
+
+> 注意：
+>
+> 1. 当数据增加成功后，所有的数据库都会提示用户，新增后响应的行数。
+> 2. 如果只是从代码长度上看，简化格式肯定是比较短的。但是从开发维护的角度来说，强烈要求使用**完整格式**来新增数据。
+
+1. 以上操作都是对数据行的完整添加，但有时候只是想向 myemp表中插入某几列数据，这样以来就会有一些列数据为null。
+
+   1. 则可以使用下列方法来添加
+
+      1. 向 myemp表中添加一行数据 。只添加 （ 姓名,编号,职位,薪资,部门编号）
+
+         ```mysql
+         INSERT INTO myemp (ename,empno,job,mgr,hiredate,sal,comm,deptno) 
+         VALUES ('张三',8888,'人事',null,null,3500,null,40);
+         ```
+
+         ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-20/71611408-file_1492692499277_14c57.png)
+
+      2. 也可以使用该方法添加（不写 不需要添加的列）
+
+         ```mysql
+         INSERT INTO myemp (ename,empno,job,sal,deptno) 
+         VALUES ('张三',8888,'人事',3500,40);
+         ```
+
+         ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-20/53608221-file_1492692615315_db97.png)
+
+         **这么添加数的话，没有添加的列会使用 默认值填充(如果没有默认值，则用null填充)。**
+
+### 29.3.3 修改表中数据
+
+实现数据表修改数据行的操作语法：
+
+```mysql
+UPDATE 表名称 SET 字段1=值1,字段2=值2,... [WHERE 更新条件]
+```
+
+在使用更新的时候，WHERE 子句里面的内容可以使用 IN、BETWEEN..AND、LIKE等限定查询符号
+
+
+
+如：
+
+1. 将SMITH的工资修改为 8000，佣金修改为9000；
+
+   ```mysql
+   UPDATE myemp SET sal=8000,comm=9000 WHERE ename='SMITH';
+   ```
+
+   ![](http://ojx4zwltq.bkt.clouddn.com/17-4-23/62785564-file_1492942665423_dff8.png)
+
+   更新成功的行数 由 条件WHERE 决定。
+
+2. 将ALLEN的工资修改为 SCOTT的工资。
+
+   ```mysql
+   UPDATE myemp SET sal = (SELECT e.sal FROM myemp e WHERE ename='SCOTT' )WHERE ename = 'ALLEN';
+   ```
+
+   ![](http://ojx4zwltq.bkt.clouddn.com/17-4-23/65208090-file_1492942851701_f426.png)
+
+   在更新语法中的 SET 子句中 可以使用子查询。
+
+3. 将薪资低于公司的平均薪资的雇员的薪资上涨20%;
+
+   ```mysql
+   UPDATE myemp SET sal= sal*1.2 WHERE sal < (SELECT AVG(sal) FROM myemp);
+   ```
+
+   ![](http://ojx4zwltq.bkt.clouddn.com/17-4-23/72795691-file_1492943242498_700f.png)
+
+4. 将所有雇员的薪资上涨20%。(修改全部，不需要加WHERE)
+
+   ```mysql
+   UPDATE myemp SET sal= sal*1.2;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-23/29169655-file_1492943387970_6e0f.png)
+
+**注意：**更新数据的时候，内部类似于一个查询的过程，也是很耗时间的操作。每秒有同时20个并发的访问操作，那么基本可以给数据库判死刑了。所以，一定要避免修改全部数据。即：在以后的修改操作中，一定不可能不写 WHERE子句。
+
+
+
+### 29.3.4 删除表中数据
+
+实现数据表删除数据行的操作语法：
+
+```mysql
+DELETE FROM 表名 [WHERE 删除条件]
+```
+
+> 删除的 WHERE 子句中依然可以使用子查询进行操作
+
+1. 删除雇员编号为7566的雇员信息
+
+   ```mysql
+   DELETE FROM myemp WHERE empno=7566;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-23/74629114-file_1492946595164_10a25.png)
+
+2. 删除雇员编号为7788、7902的雇员信息
+
+   ```mysql
+   DELETE FROM myemp WHERE empno IN(7788,7902);
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-23/74478122-file_1492946711278_fe1c.png)
+
+3. 删除薪资高于平均薪资的雇员的信息。
+
+   ```mysql
+   DELETE FROM myemp WHERE sal>(SELECT AVG(sal) FROM myemp);
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-23/59506700-file_1492946800688_9eab.png)
+
+4. 删除所有雇员信息(无 WHERE子句)
+
+   ```mysql
+   DELETE FROM myemp;
+   ```
+
+   ​	![](http://ojx4zwltq.bkt.clouddn.com/17-4-23/54095102-file_1492946982170_9f3e.png)
+
+**注意：**在任何的数据库系统中，删除的操作都属于极高风险的操作。一个稳定的系统，对于删除操作都是具备有 **逻辑删除**和**物理删除**的两种方式。
+
+- 物理删除：直接执行DELETE FROM ， 彻底从表中删除记录；**风险高**
+- 逻辑删除：为数据表增加一个逻辑字段。例如：有一个deleteFlag字段，如果deleteFlag=1表示数据被删除，如果deleteFlag=0则表示未被删除。则执行删除操作的时候只需要把deleteFlag字段的值修改成1即可。那么在每次查询的时候，不需要看到被删除的数据，只需要增加一个WHERE条件 flag=0即可。
+
+实际开发中，应该结合两种删除方法。大多情况下，一些有用的数据应该使用 逻辑删除，而对于一些毫无用处的 记录 则该彻底删除就选择物理删除。根据实际情况来选择。
+
+
+
+
+
+## 29.4 事务
+
+### 29.4.1 什么是事务
+
+事务是应用程序中一系列严密的操作，所有操作必须成功完成，否则在每个操作中所作的所有更改都会被撤消。也就是事务具有原子性，一个事务中的一系列的操作要么全部成功，要么一个都不做。 
+事务的结束有两种，当事务中的所以步骤全部成功执行时，事务提交。如果其中一个步骤失败，将发生回滚操作，撤消之前到事务开始时的所以操作。 
+
+#### 29.4.1.1 例子
+
+假设现在要执行一种转账业务操作：张三要转账给李四100W元，手续费50元。
+
+1. 第一步：从张三同学的账户上减去100W；
+2. 第二步：在李四同学的账户上增加100W；
+3. 第三步：上面两步执行成功后，再从张三的账户中减去50元的转账费用。
+
+如果说 程序执行到第二步的时候出现了错误，也就是张三扣除了100W，而李四没有收到100W。那么我们应该让第一步执行的操作回复到操作之前。
+
+那么也就是说，这一系列的转账操作必须执行三条更新操作，并且是属于同一个操作业务，为了保证这三个更新操作要么同时成功，要么同时失败，那么这样的操作我们把它称为**事务**。
+
+> **注意：**事务是对于数据更新的时候才使用的，也就说只有DML的update操作才存在事务的概念。
+
+### 29.4.2 事务的ACID特点
+
+**事务具有四个特征：**
+
+1. 原子性（ Atomicity ）
+   - 指整个数据库事务是不可分割的工作单位。只有使据库中所有的操作执行成功，才算整个事务成功；事务中任何一个SQL语句执行失败，那么已经执行成功的SQL语句也必须撤销，数据库状态应该退回到执行事务前的状态。 
+2. 一致性（ Consistency ）
+   - 事务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态。因此当数据库只包含成功事务提交的结果时，就说数据库处于一致性状态。如果数据库系统 运行中发生故障，有些事务尚未完成就被迫中断，这些未完成事务对数据库所做的修改有一部分已写入物理数据库，这时数据库就处于一种不正确的状态，或者说是 不一致的状态。 
+3. 隔离性（ Isolation ）
+   - 一个事务的执行不能与其它事务互相干扰。即一个事务内部的操作及使用的数据对其它并发事务是隔离的，并发执行的各个事务之间不能互相干扰。
+     - ***事务锁的概念：***数据库管理系统**采用锁机制来实现事务的隔离性**。当多个事务同时更新数据库中相同的数据时，只允许持有锁的事务能更新该数据，其他事务必须等待，直到前一个事务释放了锁，其他事务才有机会更新该数据。
+4. 持续性（ Durability ）
+   - 也称永久性，指一个事务一旦提交，它对数据库中的数据的改变就应该是永久性的。接下来的其它操作或故障不应该对其执行结果有任何影响。
+
+这四个特性简称为 **ACID** 特性。 
+
+### 29.4.3 事务的操作
+
+Session（会话）：表示一个唯一的登陆用户。在Oracle中，每一个登陆到数据库上的用户都会自动的分配一个 Session，即：每一个session都表示不同的用户，而每一个session都有自己独立事务。
+
+每个Session的事务粗粒操作都可以使用两个命令：
+
+1. commit：提交事务。只有执行了commit 操作之后，更新操作才真正写入数据库，而没有 commit之前的所有更新操作都会保存在事务事务缓冲区中。
+2. rollback：回退事务。如果发现更新操作有问题，则可以使用 rollback 恢复所有更新操作退回到执行事务前的状态。
+
+#### 30.4.3.1 事务的隔离性（ Isolation ）
+
+事务锁的情况：
+
+测试：
+
+1. 使用sqlplus 登陆scott/tiger用户，更新操作一条数据，暂不commit；
+2. 再使用另一个 sqlplus 也登陆scott/tiger用户，更新操作同一条数据。观察发现执行操作并没有完成，而是进入阻塞状态。
+3. 再让第一个 sqlplus 的用户执行 commit或rollback操作。观察发现，第二个sqlplus的用户的操作执行了。
+
+即：相同数据被某个session获得，则该数据的执行权被占据，其他的session不能操作。如果有其他session请求操作该数据，则只有等待获得该数据执行权的session提交操作或者回滚操作后。后来的session才能获得该数据的执行权。
+
+**与JAVA多线程 并发锁的概念类似。**
+
+
+
+## 29.5 数据库备份
+
+任何数据库系统，数据库的备份操作拥有都是必须熟练掌握的技术。
+
+### 29.5.1 数据库的导出与导入
+
+#### 29.5.1.1 数据的导出
+
+针对用户的数据实现备份操作，将里面的内容导出到指定的结构文件，以便于进行数据的恢复。
+
+1. 现在磁盘上建立一个目录 如 C:\Users\linhuaming\backup
+2. 通过命令行进入到此目录 cd C:\Users\linhuaming\backup
+3. 输入exp命令 （此命令指的的Oracle导出数据的操作）
+   1. 输入用户名 scott
+   2. 输入密码 tiger
+      - 这里有一个数据导出的缓冲区大小；默认 4096
+   3. 然后按回车；导出的默认文件名称为：EXPDAT.DMP
+   4. 选择用户 或 表-> 可以选择用户
+   5. 选择导出权限->yes
+   6. 选择导出数据表->yse
+   7. 压缩区->yes
+   8. 系统会进入导出数据的过程…耐心等待...
+   9. 导出成功（可能有警告，可以忽略！）
+
+#### 29.5.1.2 数据的导入
+
+1. 通过命令行进入到此目录 cd C:\Users\linhuaming\backup
+2. 输入imp命令 （此命令指的的Oracle导入数据的操作）
+   1. 输入用户名 scott
+   2. 输入密码 tiger
+   3. 仅导入数据->no
+   4. 导入文件：默认文件名称为：EXPDAT.DMP
+      - 这里有一个数据导入的缓冲区大小；默认 30720
+   5. 只列出导入的内容->no
+   6. 由于对象已经存在，忽略创建错误->no
+   7. 导入权限->yes
+   8. 导入数据表->yes
+   9. 导入整个导出文件->yes
+   10. 系统会进入导入数据的过程…耐心等待...
+   11. 导入成功
+
+
+
+#### 29.5.1.3 数据库的导出与导入 说明
+
+此类的数据导出和导入只适合小数据的情况，或者只适合项目更换数据库的情况。
+
+因为数据的在导出和导入的时候是不能进行其他操作的。实际开发中数据量比较大的情况那就很麻烦了。
+
+
+
