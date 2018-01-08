@@ -48,6 +48,7 @@ public class demo1 {
 		Statement st = null;
 		try {
 			st = conn.createStatement();
+			conn.setAutoCommit(false);
 			// create SQL statement, no ';' need here in SQL
 			String sql = "select * from stu";
 			// execute SQL statement
@@ -98,9 +99,10 @@ public class demo1 {
 	 */
 	private static void addRow() {
 		Connection conn = jdbcUtiles.getConn();
-		Statement st = null;
+		Statement statement = null;
 		System.out.println("请输入学生名字:");
 		String name = getInput();
+		
 		System.out.println("请输入学生年龄:");
 		Integer age = 0;
 		boolean flag = true;
@@ -126,7 +128,7 @@ public class demo1 {
 		 * 			2.输入其他非指定格式还要验证
 		 */
 		try {
-			st = conn.createStatement();
+			statement = conn.createStatement();
 			String sql = "insert into stu(sname,sage,sgender,sbirth) values" + "('" + name + "'," + age + ",'" + gender
 					+ "'," + "to_date('" + birth + "','yyyy-mm-dd'))";
 			/**
@@ -136,13 +138,13 @@ public class demo1 {
 			 * 操作, 并且会返回一个 int 值, 这个值是 [对SQL语句操作作出响应的行数]
 			 */
 			// System.out.println(sql);
-			int rows = st.executeUpdate(sql);
+			int rows = statement.executeUpdate(sql);
 			System.out.println("响应行数:" + rows);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			jdbcUtiles.closeAll(st, conn);
+			jdbcUtiles.closeAll(statement, conn);
 		}
 	}
 

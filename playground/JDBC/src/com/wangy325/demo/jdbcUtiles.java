@@ -23,7 +23,7 @@ public class jdbcUtiles {
 	public static Connection getConn() {
 		Connection conn = null;
 		try {
-			String url = "jdbc:oracle:thin:@192.168.3.154:1521:orcl";
+			String url = "jdbc:oracle:thin:@192.168.3.135:1521:orcl";
 			String user = "scott";
 			String psw = "tiger";
 			conn = DriverManager.getConnection(url, user, psw);
