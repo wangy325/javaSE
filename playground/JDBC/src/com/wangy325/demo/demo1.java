@@ -1,6 +1,7 @@
 package com.wangy325.demo;
 
 import java.sql.Connection;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,16 +26,85 @@ import java.util.Scanner;
  */
 public class demo1 {
 	private static Scanner console;
-	
+
+	/**
+	 * insert [1] row of data into a particular TABLE
+	 */
+	private static void addRow() {
+		Connection conn = jdbcUtiles.getConn();
+		Statement statement = null;
+		System.out.println("请输入学生名字:");
+		String name = getInput();
+		// PreparedStatement
+
+		System.out.println("请输入学生年龄:");
+		Integer age = 0;
+		boolean flag = true;
+		while (flag) {
+			try {
+				age = Integer.parseInt(getInput());
+				if (age > 0 && age < 40)
+					flag = false;
+				else
+					System.out.println("学生年龄不能为负数,也不能大于40");
+			} catch (NumberFormatException e1) {
+				System.out.println("非法输入,请输入数字");
+				// e1.printStackTrace();
+			}
+		}
+		System.out.println("请输入学生性别(female/male):");
+		String gender = getInput();
+		System.out.println("请输入学生生日(yyyy-mm-dd):");
+		String birth = getInput();
+		consoleShut();
+		/**
+		 * 日期验证: 1.输入指定格式 19911106 或者 1991-11-12 添加成功
+		 * 			2.输入其他非指定格式还要验证
+		 */
+		try {
+			statement = conn.createStatement();
+			String sql = "insert into stu(sname,sage,sgender,sbirth) values" + "('" + name + "'," + age + ",'" + gender
+					+ "'," + "to_date('" + birth + "','yyyy-mm-dd'))";
+			/**
+			 * 利用 SQL 语句像数据表中添加 Date 类型的数据
+			 * 用到了 SQL 中的 to_date('string','format')函数
+			 * executeUpdate() 方法会执行SQL语句对数据表的 [添加] [删除] 和 [更新] 
+			 * 操作, 并且会返回一个 int 值, 这个值是 [对SQL语句操作作出响应的行数]
+			 */
+			// System.out.println(sql);
+			int rows = statement.executeUpdate(sql);
+			System.out.println("响应行数:" + rows);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			jdbcUtiles.closeAll(statement, conn);
+		}
+	}
+
 	/**
 	 * close Scanner console
 	 */
 	public static void consoleShut() {
 		console.close();
 	}
+
+	/**
+	 * @return the data of each column, in the form of STRING.
+	 */
+	private static String getInput() {
+		console = new Scanner(System.in);
+		String getIn = console.next();
+		// 不能关闭?
+		// console.close();
+		// 如果没有输入, 如何默认为该单行单列的值为null?
+		// console.next() 不能接收 null ...
+		return getIn;
+	}
+
 	public static void main(String[] args) {
 		// build connection
-		addRow();
+		// addRow();
 		readTable();
 	}
 
@@ -92,72 +162,5 @@ public class demo1 {
 			// close resources
 			jdbcUtiles.closeAll(st, conn);
 		}
-	}
-
-	/**
-	 * insert [1] row of data into a particular TABLE
-	 */
-	private static void addRow() {
-		Connection conn = jdbcUtiles.getConn();
-		Statement statement = null;
-		System.out.println("请输入学生名字:");
-		String name = getInput();
-		
-		System.out.println("请输入学生年龄:");
-		Integer age = 0;
-		boolean flag = true;
-		while (flag) {
-			try {
-				age = Integer.parseInt(getInput());
-				if (age > 0 && age < 40)
-					flag = false;
-				else
-					System.out.println("学生年龄不能为负数,也不能大于40");
-			} catch (NumberFormatException e1) {
-				System.out.println("非法输入,请输入数字");
-				// e1.printStackTrace();
-			}
-		}
-		System.out.println("请输入学生性别(female/male):");
-		String gender = getInput();
-		System.out.println("请输入学生生日(yyyy-mm-dd):");
-		String birth = getInput();
-		consoleShut();
-		/**
-		 * 日期验证: 1.输入指定格式 19911106 或者 1991-11-12 添加成功
-		 * 			2.输入其他非指定格式还要验证
-		 */
-		try {
-			statement = conn.createStatement();
-			String sql = "insert into stu(sname,sage,sgender,sbirth) values" + "('" + name + "'," + age + ",'" + gender
-					+ "'," + "to_date('" + birth + "','yyyy-mm-dd'))";
-			/**
-			 * 利用 SQL 语句像数据表中添加 Date 类型的数据
-			 * 用到了 SQL 中的 to_date('string','format')函数
-			 * executeUpdate() 方法会执行SQL语句对数据表的 [添加] [删除] 和 [更新] 
-			 * 操作, 并且会返回一个 int 值, 这个值是 [对SQL语句操作作出响应的行数]
-			 */
-			// System.out.println(sql);
-			int rows = statement.executeUpdate(sql);
-			System.out.println("响应行数:" + rows);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			jdbcUtiles.closeAll(statement, conn);
-		}
-	}
-
-	/**
-	 * @return the data of each column, in the form of STRING.
-	 */
-	private static String getInput() {
-		console = new Scanner(System.in);
-		String getIn = console.next();
-		// 不能关闭?
-		// console.close();
-		// 如果没有输入, 如何默认为该单行单列的值为null?
-		// console.next() 不能接收 null ...
-		return getIn;
 	}
 }

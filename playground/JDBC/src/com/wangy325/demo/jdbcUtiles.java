@@ -16,24 +16,6 @@ import java.sql.SQLException;
  */
 public class jdbcUtiles {
 	/**
-	 * connect to database on win 7, hostname is ipAddress
-	 * @return Connection instance
-	 * @statement DriverManager.getConnection(String url,String user, String password);
-	 */
-	public static Connection getConn() {
-		Connection conn = null;
-		try {
-			String url = "jdbc:oracle:thin:@192.168.3.135:1521:orcl";
-			String user = "scott";
-			String psw = "tiger";
-			conn = DriverManager.getConnection(url, user, psw);
-			 System.out.println("数据库连接成功！");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return conn;
-	}
-	/**
 	 * close database Connection instance
 	 */
 	public static void close(Connection conn) {
@@ -59,6 +41,24 @@ public class jdbcUtiles {
 				}
 			}
 		}
+	}
+	/**
+	 * connect to database on win 7, hostname is ipAddress
+	 * @return Connection instance
+	 * @statement DriverManager.getConnection(String url,String user, String password);
+	 */
+	public static Connection getConn() {
+		Connection conn = null;
+		try {
+			String url = "jdbc:oracle:thin:@192.168.3.135:1521:orcl";
+			String user = "scott";
+			String psw = "tiger";
+			conn = DriverManager.getConnection(url, user, psw);
+			 System.out.println("数据库连接成功！");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return conn;
 	}
 
 }

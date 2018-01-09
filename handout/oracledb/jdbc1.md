@@ -532,70 +532,78 @@ if (executeQuery.next()) {
 
 相对于Statement对象而言`PreperedStatement`可以**避免SQL注入**的问题
 
-## PreparedStatement优点
+## 7.1  PreparedStatement优点
 
-1. PreperedStatement可以避免SQL注入的问题；
+1. 可以避免SQL注入的问题；
 
-2. PreparedStatement 可对SQL进行预编译，从而提高数据库的执行效率；
+2. 可对SQL进行**预编译**，从而提高数据库的执行效率；
 
-3. PreperedStatement对于sql中的参数，允许使用占位符的形式进行替换，简化sql语句的编写。
+3. 对于sql中的参数，允许使用占位符的形式进行替换，简化sql语句的编写。
 
    > 预编译：
    >
    >  数据库都会尽最大努力对预编译语句提供最大的性能优化，因为预编译语句有可能被重复调用，所以语句在被DB的编译器编译后，执行代码被缓存下来。那么下次调用时只要是相同的预编译语句就不需要编译，只要将参数直接传入编译过的语句执行代码中，就会得到执行。这并不是说只有一个 Connection 中多次执行的预编译语句被缓存，而是对于整个DB中(所有Connection)，只要预编译的语句语法和缓存中匹配。那么在任何时候就可以不需要再次编译而可以直接执行。
 
-## 创建PreparedStatement对象
+## 7.2  创建PreparedStatement对象
 
-```
+```java
 //创建一个Statement对象，用于执行SQL语句并返回相应的结果
-PreparedStatement ps = conn.preparedStatement(String sql);//需指定预执行SQL语句
-
+//需指定预执行SQL语句
+PreparedStatement ps = conn.preparedStatement(String sql);
 ```
 
-## 常用PreparedStatement方法
+## 7.3 常用方法
 
-- executeQuery();运行select语句，返回ResultSet结果集
-- executeUpdate();运行insert/update/delete操作，返回响应的行数
-- execute();运行任何sql语句(含DDL)，返回是否有结果
-- addBatch() ;把多条sql语句放到一个批处理中
-- executeBatch();向数据库发送一批sql语句执行
+> - *executeQuery();运行select语句，返回ResultSet结果集*
+>
+> - *executeUpdate();运行insert/update/delete操作，返回响应的行数*
+>
+> - *execute();运行任何sql语句(含DDL)，返回是否有结果*
+>
+> - *addBatch() ;把多条sql语句放到一个批处理中*
+>
+> - *executeBatch();向数据库发送一批sql语句执行*
+>
+>   > 最重要的 setObject(obj) 方法
+>
 
-## 注意：
+> 注意：
+>
+> PreparedStatement 每次执行一条SQL语句**且提交**后，应该释放相关资源
+>
+> 如需再次使用则都需要重新从Connection对象中的preparedStatement相关的方法来重新创建PreparedStatement对象，使用完释放资源
 
-PreparedStatement 每次执行一条SQL语句且提交后，应该释放相关资源。如需再次使用则都需要重新从Connection对象中的preparedStatement相关的方法来重新创建PreparedStatement对象，使用完释放资源。
+## 7.4 操作逻辑
 
-## no.1创建PreparedStatement对象
+### 7.4.1 创建对象
 
-```
+```java
 //创建一个PreparedStatement对象，用于预执行SQL语句并返回相应的结果
-String sql = "SELECT empno,ename,job,sal FROM myemp WHERE deptno=? AND sal >=?";//'?'代表占位符
-PreparedStatement ps = conn.prepareStatement(sql);//需指定预执行SQL语句
-
+String sql = "SELECT empno,ename,job,sal FROM myemp WHERE deptno=? AND sal >=?";
+//'?'代表占位符
+PreparedStatement ps = conn.prepareStatement(sql);
 ```
 
-## no.2填充占位符
+### 7.4.2  填充占位符
 
 **占位符下标从**`1`**开始，且顺序是从左到右。**
 
-```
-ps.setInt(1, 30);//设置第一个占位符的值为 30
-ps.setDouble(2, 1500.00);//设置第二个占位符的值为 1500.00
-
-```
-
-## no.3执行查询语句
-
-```
-ResultSet rs = ps.executeQuery();//返回ResultSet
-
+```java
+ps.setInt(1, 30);	//设置第一个占位符的值为 30
+ps.setDouble(2, 1500.00);	//设置第二个占位符的值为 1500.00
 ```
 
-至此，查询语句已经执行完成！
+### 7.4.3  执行语句
 
-## no.4释放PreparedStatement资源
-
+```java
+ResultSet rs = ps.executeQuery();	//返回ResultSet
 ```
-finally {//在finally中执行，以防在执行sql中出现错误，而忽略资源的释放。
+
+### 7.4.4释放资源
+
+```java
+finally {
+  //在finally中执行，以防在执行sql中出现错误，而忽略资源的释放。
     if (ps!=null) {
         try {
             ps.close();
@@ -607,11 +615,14 @@ finally {//在finally中执行，以防在执行sql中出现错误，而忽略�
 
 
 
-# 执行insert操作
+## 7.5 DML 操作
 
-```
+### 7.5.1 INSERT
+
+```java
 String sql = "INSERT INTO myemp (EMPNO, ENAME, JOB, HIREDATE, SAL,  DEPTNO) VALUES (?,?,?,?,?,?)";
 ps = conn.prepareStatement(sql);
+// set 方法直接插入数据
 ps.setInt(1, 6666);
 ps.setString(2, "杰克");
 ps.setString(3, "船长");
@@ -621,24 +632,22 @@ ps.setDouble(5, 9876.54);
 ps.setInt(6, 40);
 int update = ps.executeUpdate();//返回响应行数
 System.out.println(update>0?"插入成功！":"插入失败！");
-
 ```
 
-# 执行update操作
+### 7.5.2 UPDATE
 
-```
+```java
 String sql="UPDATE myemp SET sal = sal - ? WHERE deptno=?";
 ps = conn.prepareStatement(sql);
 ps.setDouble(1, 500);
 ps.setInt(2, 40);
 int update = ps.executeUpdate();// 返回响应行数
 System.out.println(update > 0 ? "更新成功！" : "更新失败！");
-
 ```
 
-# 执行delete操作
+### 7.5.3 DELETE
 
-```
+```java
 String sql = "DELETE FROM myemp WHERE deptno=?";
 ps = conn.prepareStatement(sql);
 ps.setInt(1, 40);
