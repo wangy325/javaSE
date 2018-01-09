@@ -1,4 +1,4 @@
-package com.wangy325.demo02;
+package com.wangy325.dao.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,11 +15,14 @@ import org.junit.Test;
 /**
  * @author wangy325
  *
- * @date Jan 8, 2018  5:54:16 PM
+ * @date Jan 9, 2018  9:46:09 AM
  *
- * @description   升级 demo 中的JUtils 工具, 利用 config 文件获取对数据库的连接
+ * @description    加载驱动, 连接数据库, 关闭资源的方法类
+ * 
+ * @tags 
  */
-public class JUnitsPLus {
+
+public class JdbcUtils {
 	// 设置静态属性
 	private static String ORACLEDRIVER, URL, USERNAME, PASSWD;
 	/**
@@ -77,23 +80,6 @@ public class JUnitsPLus {
 	}
 
 	/**
-	 * 泛型方法释放资源
-	 */
-	private static <T extends AutoCloseable> void close(T... arr) {
-
-		for (T t : arr) {
-			if (t != null) {
-				try {
-					t.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-	}
-
-	/**
 	 * Test 方法区利用 JUnit 4 来验证上述方法中获取的变量是否符合预期
 	 */
 	@Test
@@ -112,6 +98,14 @@ public class JUnitsPLus {
 		// 只要 getConn() 返回值不为空, 说明连接正常
 		if (!(getConn() != null))
 			System.out.println("connecting failed");
-
 	}
+	@Test
+	// 计算连接数据库花费的时间
+	public void testConn() {
+		long start = System.currentTimeMillis();
+		getConn();
+		long end = System.currentTimeMillis();
+		System.out.println("time:" + (end - start));
+	}
+
 }

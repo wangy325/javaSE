@@ -15,7 +15,7 @@ public class Element {
 	/**
 	 * Element 对象的属性就是所查询的表的列名
 	 * 
-	 * 试图属性 [columnName] 用一个 ArrayList 封装起来
+	 * 试图将属性 [columnName] 用一个 ArrayList 封装起来
 	 * 但是结果并不理想, array作为一个属性
 	 * 不能设置列名所对应行的值
 	 */

@@ -51,7 +51,7 @@ public class QueryUtils {
 		// 获取表格列数 cc
 		//
 		int cc = rsmdata.getColumnCount();
-//		String[] colname = new String[cc];
+		// String[] colname = new String[cc];
 		Element element = new Element();
 
 		while (rs.next()) {
@@ -59,10 +59,10 @@ public class QueryUtils {
 				try {
 					// 列名
 					Object colname = rsmdata.getColumnName(i);
-					rsmdata.getColumnTypeName(i)
+					// rsmdata.getColumnTypeName(i)
 					// 通过列名拿到该列的常量值
 					Object obj = rs.getObject(colname.toString());
-					 element.colname.setColname(obj);
+					// element.colname.setColname(obj);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
