@@ -25,7 +25,18 @@ public class StuApp {
 		int choice = InputUtils.inputInt("请选择要进行的操作:");
 		switch (choice) {
 		case 1: // 新建学生
-			String name = InputUtils.inputStr("请输入新建学生的姓名:");
+			/**
+			 * 执行姓名检查
+			 */
+			String name = "";
+			System.out.print("请输入新建学生的姓名:");
+			while (true) {
+				name = InputUtils.inputStr("");
+				if ((ss.checkStuName(name)))
+					System.out.print("学生已存在, 请重新输入:");
+				else
+					break;
+			}
 			stu.setSname(name);
 			Integer age = InputUtils.inputInt("请输入新建学生的年龄:");
 			stu.setSage(age);
@@ -39,40 +50,36 @@ public class StuApp {
 			}
 			break;
 		case 2: // 删除学生
-			String str = InputUtils.inputStr("请输入要删除的学生名字:");
+			String dname = InputUtils.inputStr("请输入要删除的学生名字:");
 			InputUtils.closeConsole();
 			try {
-				System.out.println(ss.delStudent(str) ? "删除成功" : "删除失败");
+				System.out.println(ss.delStudent(dname) ? "删除成功" : "删除失败");
 			} catch (StuException e) {
 				e.printStackTrace();
 			}
 			break;
 		case 3: // 修改学生
-			String sname = "";
-			System.out.println("请输入要修改信息的学生名字");
-			while(true) {
-				sname = InputUtils.inputStr("");
-				try {
-					if (ss.queryStudent(sname) == null)
-						System.out.println("学生不存在,请重新输入");
-					else
-						break;
-				} catch (StuException e) {
-					e.printStackTrace();
-				}
-			}
 			/**
 			 * 请试图解决输入学生不存在的问题
 			 * 1. 输入学生名字进行判断
-			 * 2. 不存在直接推出方法, 不执行后续操作.
+			 * 2. 不存在则要求重新输入
 			 */
+			String mname = "";
+			System.out.print("请输入要修改的学生姓名:");
+			while (true) {
+				mname = InputUtils.inputStr("");
+				if (!(ss.checkStuName(mname)))
+					System.out.print("学生不存在,请重新输入:");
+				else
+					break;
+			}
 			Integer newage = InputUtils.inputInt("请输入修改后的学生年龄:");
 			stu.setSage(newage);
 			String newgender = InputUtils.inputStr("请输入修改后的学生性别:");
 			stu.setSgender(newgender);
 			InputUtils.closeConsole();
 			try {
-				System.out.println(ss.reStudent(sname, stu) ? "修改成功" : "修改失败..");
+				System.out.println(ss.reStudent(mname, stu) ? "修改成功" : "修改失败..");
 			} catch (StuException e) {
 				e.printStackTrace();
 			}
@@ -86,10 +93,10 @@ public class StuApp {
 				 * 1. 获取学生对象
 				 * 2. 由于方法的原因, 当输入的学生名字不存在的时候, 返回的是一个空 Student 对象
 				 */
-				 if (ss.queryStudent(qname) == null)
-				 System.out.println("不存在指定学生");
-				 else
-				 System.out.println(ss.queryStudent(qname));
+				if (ss.queryStudent(qname) == null)
+					System.out.println("不存在指定学生");
+				else
+					System.out.println(ss.queryStudent(qname));
 			} catch (StuException e) {
 				e.printStackTrace();
 			}
@@ -98,5 +105,4 @@ public class StuApp {
 			return;
 		}
 	}
-
 }

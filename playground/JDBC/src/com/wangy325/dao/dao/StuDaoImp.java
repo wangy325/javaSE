@@ -1,6 +1,7 @@
 package com.wangy325.dao.dao;
 
 import com.wangy325.dao.bean.Student;
+import com.wangy325.dao.utils.CheckUtils;
 import com.wangy325.dao.utils.QueryUtils;
 import com.wangy325.dao.utils.UpdateUtils;
 
@@ -51,12 +52,26 @@ public class StuDaoImp implements StuDao {
 		return false;
 	}
 
+	/**
+	 * 通过学生名字查询学生信息
+	 * 执行 SQL 语句, 查询到指定name的学生信息, 并返回学生对象
+	 */
 	@Override
 	public Student queryStu(String name) throws Exception {
-		/**
-		 * 执行 SQL 语句, 查询到指定name的学生信息, 并返回学生对象
-		 */
 		return QueryUtils.query(name);
+	}
+
+	/**
+	 *  检查名字输入, 用来判断学生是否存在
+	 *  学生名字具有唯一性
+	 * @param name
+	 * @return boolean
+	 */
+	public boolean check(String name) {
+		if (CheckUtils.check(name))
+			return true;
+		return false;
+
 	}
 
 }

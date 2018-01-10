@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * @author wangy325
@@ -37,7 +36,7 @@ public class QueryUtils {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			ResultSetMetaData rsmdata = rs.getMetaData();
-
+			addDataToElement(rsmdata, rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
