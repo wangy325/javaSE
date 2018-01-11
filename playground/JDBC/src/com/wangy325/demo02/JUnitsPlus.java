@@ -19,7 +19,7 @@ import org.junit.Test;
  *
  * @description   升级 demo 中的JUtils 工具, 利用 config 文件获取对数据库的连接
  */
-public class JUnitsPLus {
+public class JUnitsPlus {
 	// 设置静态属性
 	private static String ORACLEDRIVER, URL, USERNAME, PASSWD;
 	/**
@@ -30,7 +30,7 @@ public class JUnitsPLus {
 		// class Properties extends Hashtable<Object,Object>
 		Properties config = new Properties();
 		try {
-			config.load(new BufferedReader(new FileReader(new File("src/conn.config"))));
+			config.load(new BufferedReader(new FileReader(new File("src/com/wangy325/demo02/conn.config"))));
 			// 获取属性
 			ORACLEDRIVER = config.getProperty("oracleDriver");
 			URL = config.getProperty("url");
@@ -79,7 +79,8 @@ public class JUnitsPLus {
 	/**
 	 * 泛型方法释放资源
 	 */
-	private static <T extends AutoCloseable> void close(T... arr) {
+	@SafeVarargs
+	public static <T extends AutoCloseable>  void close(T... arr) {
 
 		for (T t : arr) {
 			if (t != null) {

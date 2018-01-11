@@ -19,14 +19,15 @@ public class Element {
 	 */
 	// private static ArrayList<Object> colname;
 	private String sname;
-	private int sage;
+	// private int sage;
+	private String sgender;
 
 	public Element() {
 	}
 
 	public Element(String sname, int sage) {
 		this.sname = sname;
-		this.sage = sage;
+//		this.sage = sage;
 	}
 
 	public String getSname() {
@@ -37,17 +38,17 @@ public class Element {
 		this.sname = sname;
 	}
 
-	public int getSage() {
-		return sage;
-	}
-
-	public void setSage(int sage) {
-		this.sage = sage;
-	}
+//	public int getSage() {
+//		return sage;
+//	}
+//
+//	public void setSage(int sage) {
+//		this.sage = sage;
+//	}
 
 	@Override
 	public String toString() {
-		return "Element [sname=" + sname + ", sage=" + sage + "]";
+		return "Element [sname=" + sname + ", sgeder=" + sgender + "]";
 	}
 
 }

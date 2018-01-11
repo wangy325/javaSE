@@ -1,10 +1,20 @@
 package com.wangy325.demo02;
 
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+
+import org.junit.Test;
 
 /**
  * @author wangy325
@@ -31,42 +41,103 @@ public class QueryUtils {
 	 * @param sql
 	 */
 	public static void query(String sql) {
-		Connection conn = JUnitsPLus.getConn();
+		Connection conn = JUnitsPlus.getConn();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
 			ResultSetMetaData rsmdata = rs.getMetaData();
-			addDataToElement(rsmdata, rs);
+			List<Element> eleList = addData(rsmdata, rs);
+			for(Element ele : eleList) {
+				System.out.println(ele);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			JUnitsPlus.close(rs, ps, conn);
 		}
 	}
 
 	/**
+	 * @return 
 	 * @throws SQLException 
 	 * 
 	 */
-	public static void addDataToElement(ResultSetMetaData rsmdata, ResultSet rs) throws SQLException {
+	public static List<Element> addData(ResultSetMetaData rsmdata, ResultSet rs) throws SQLException {
 		// 获取表格列数 cc
-		//
-		int cc = rsmdata.getColumnCount();
-		// String[] colname = new String[cc];
 		Element element = new Element();
-
+		List<Element> eleList = new ArrayList<>();
 		while (rs.next()) {
-			for (int i = 1; i <= cc; i++) {
+			Map<String, Object> rowData = new TreeMap<>();
+			for (int i = 0; i < rsmdata.getColumnCount(); i++) {
 				try {
-					// 列名
-					Object colname = rsmdata.getColumnName(i);
-					// rsmdata.getColumnTypeName(i)
+					String colName = rsmdata.getColumnName(i+1);
 					// 通过列名拿到该列的常量值
-					Object obj = rs.getObject(colname.toString());
-					// element.colname.setColname(obj);
+					Object rowConstant = rs.getObject(colName.toString());
+					rowData.put(colName, rowConstant);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 			}
+			// 一行操作完成
+			/**
+			 * 这个方法将一行中的数据存入 List<Element> 中
+			 */
+			@SuppressWarnings("unchecked")
+			Class<Element> clazz = (Class<Element>) element.getClass();
+			// element =genElement(rowData, clazz);
+			try {
+				eleList.add(genElement(rowData, clazz));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+		return eleList;
 
 	}
+
+	/**
+	 * @param rowData
+	 * @param clazz
+	 * @return 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
+	 */
+	public static Element genElement(Map<String, Object> rowData, Class<Element> clazz) throws Exception {
+
+		Element element = clazz.newInstance();
+
+		Set<Entry<String, Object>> entrySet = rowData.entrySet();
+		for (Entry<String, Object> es : entrySet) {
+			String key = es.getKey();
+			Object value = es.getValue();
+			// 获取属性
+			Field attri;
+			try {
+				attri = clazz.getDeclaredField(key.toLowerCase());
+				/**
+				 * <// 检查属性
+				 * System.out.println(attri.toString());
+				 */
+				// Element 成员变量的属性私有了, setAccessible(true) 保证私有属性能够被访问
+				attri.setAccessible(true);
+				// 设置属性
+				if(value instanceof BigDecimal) 
+					attri.set(element, Integer.valueOf(value.toString()));
+				else
+					attri.set(element, value.toString());
+			} catch (Exception e) {
+				// 拿不到属性异常 不管他
+				//因为只要拿到需要的属性
+			}
+		}
+		return element;
+	}
+	
+	@Test
+	public void test() {
+		query("SELECT * FROM stu");
+	}
+
 }
