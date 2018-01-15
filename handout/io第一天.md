@@ -86,9 +86,11 @@
 
 IO指的是 Input/Output，IO流：输入输出流。 统称为数据流。(IO Stream)
 
-在Java程序中，对于数据的输入 / 输出操作以流的方式进行；流是从起源到接收的有序数据。JDK提供了各种各样的Stream 类，用以获取不同种类的数据；
+在Java程序中，对于数据的输入 / 输出操作以流的方式进行；流是从起源到接收的有序数据
 
-IO流的作用就是对文件数据的读和写。
+JDK提供了各种各样的Stream 类，用以获取不同种类的数据；
+
+IO流的作用就是对*文件*(?)数据的读和写
 
 ### 20.2.2 流的作用和原理？
 
@@ -198,17 +200,17 @@ IO流的作用就是对文件数据的读和写。
 
 > 注意：
 >
-> 1. 如果进行写操作的文件不存在，则自动创建该文件。
-> 2. 如果文件所在的路径也不存在则报错。
+> 1. 如果进行写操作的文件不存在，则自动创建该文件
+> 2. 如果文件所在的路径也不存在则报错
 
 #### 20.5.2.1 FileOutputStream构造方法和常用方法
 
 ##### 20.5.2.1.1 构造方法
 
-1. public FileOutputStream(String name); 通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的路径名 `name` 指定。
-2. public FileOutputStream(String name,boolean append);通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的路径名 `name` 指定。如果第二个参数为true，则将字节写入文件末尾处，而不是写入文件开始处。
-3. public FileOutputStream(File file)：通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的 `File` 对象 `file` 指定。 
-4. public FileOutputStream(File file,boolean append);通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的 `File` 对象 `file` 指定。如果第二个参数为true，则将字节写入文件末尾处，而不是写入文件开始处。
+1. public FileOutputStream(String name); 通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的路径名 `name` 指定
+2. public FileOutputStream(String name,boolean append);通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的路径名 `name` 指定。如果第二个参数为true，则将字节写入文件末尾处，而不是写入文件开始处
+3. public FileOutputStream(File file)：通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的 `File` 对象 `file` 指定
+4. public FileOutputStream(File file,boolean append);通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的 `File` 对象 `file` 指定。如果第二个参数为true，则将字节写入文件末尾处，而不是写入文件开始处
 
 ##### 20.5.2.1.1 常用方法
 
