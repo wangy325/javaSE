@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Hello JavaWeb</h1>
+	<p>This is the 1st time presented HTML content by Tomcat!</p>
+	<p>这是首次利用Tomcat呈现网页内容！</p>
+	<!-- 以下代码处理Get() 请求, 超链接标签的链接内容和 <url-pattern> 保持一致-->
+	<a href="servlet/demo">单击发送Get请求</a><br>
+	<!-- 以下代码处理Post() 请求 -->
+	<form action="servlet/demo" method="post">
+		<input type="submit" value="点击发送Post请求">
+	</form>
+	<br>
+	<!-- 以下代码用于演示Servlet的生命周期  -->
+	<a href="ServletLifeDemo">点击演示Servlet的生命周期</a>
+</body>
+</html>

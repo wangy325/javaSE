@@ -37,12 +37,12 @@ javaSE
 15. hashCode 和toString 方法的重写
 
 16. 设计模式
-       1. 单例
+             1. 单例
 
 17. 集合
-       1. List Set Map
-       2. equals 方法重写
-       3. Comparable 和 Comparator 接口
+             1. List Set Map
+             2. equals 方法重写
+             3. Comparable 和 Comparator 接口
 
 18. I/O
 
@@ -56,4 +56,18 @@ javaSE
 
 23. 枚举
 
-     ​
+24. JDBC
+
+25. 日志管理 log4j
+
+26. 设计模式
+
+           1.  单例
+
+           2.  装饰者
+
+27. html +js
+
+28. xml解析(dom4j)
+
+29. JavaWeb

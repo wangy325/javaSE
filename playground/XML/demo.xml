@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  XML Document Statement -->
+<!DOCTYPE person [
+	<!-- DTD Constrain-->
+        <!ELEMENT person (id,name)>
+        <!ELEMENT id (#PCDATA)>
+        <!ELEMENT name(#PCDATA)>       
+        ]>
+<person>
+        <!-- Element -->
+        <id>28</id>
+        <name>Beyonce</name>
+</person>
