@@ -42,13 +42,13 @@ public class ClassFile {
 		// 1.2
 		File dir1 = new File("/home/wangy325/git/");
 		File file2 = new File(dir1, "javaSE");
-		 System.out.println(file2);
+		System.out.println(file2);
 
 		// System.out.println(Arrays.toString(file2.listFiles()));
 
 		// 调用 showFiles() 方法
 		ClassFile cf = new ClassFile();
-	cf.showFiles("/home/wangy325/git/javaSE/handout/");
+		cf.showFiles("/home/wangy325/git/javaSE/handout/");
 
 		// 2. 方法
 		/**
@@ -85,7 +85,7 @@ public class ClassFile {
 		 */
 		File file = new File(str);
 		if (file.isFile()) {
-			 System.out.println(file.getAbsolutePath());
+			System.out.println(file.getAbsolutePath());
 		}
 		// 如果是目录
 		else if (file.isDirectory()) {
@@ -104,8 +104,7 @@ public class ClassFile {
 				 */
 				showFiles(st.getAbsolutePath());
 			}
-		}
-		else {
+		} else {
 			System.out.println("路径名无效");
 		}
 	}

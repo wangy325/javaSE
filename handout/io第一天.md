@@ -80,7 +80,7 @@
 > 	}
 > ```
 
-## 20.2 IO概念和种类:
+## 20.2 IO概念和种类
 
 ### 20.2.1 什么是IO流？
 
@@ -96,7 +96,7 @@ IO流的作用就是对*文件*(?)数据的读和写
 
 ![](http://ojx4zwltq.bkt.clouddn.com/17-2-15/67548515-file_1487125441328_bdbc.png)
 
-## 20.3 IO流的种类:
+## 20.3 IO流的种类
 
 ### 20.3.1 输入流、输出流
 
@@ -113,43 +113,58 @@ IO流的作用就是对*文件*(?)数据的读和写
 1. 节点流：用于直接操作目标设备的流 
 2. 处理流：是对一个已存在的流的连接和封装，通过对数据的处理为程序提供更为强大、灵活的读写功能。
 
-### 20.3.4 IO流的分类图：
+### 20.3.4 IO流的分类图
 
 ![](http://ojx4zwltq.bkt.clouddn.com/17-2-15/77129940-file_1487125824060_621f.png)
 
-## 20.4 字节输入流:
+## 20.4 字节流--抽象基类
 
-###  20.4.1 InputStream 抽象基类
+```java
+public abstract class InputStram extends Object implements Closeable
+public abstract class OutputStram extends Object implements Closeable,Flushable
+```
 
-1. available() 方法，可以获取与之关联的文件的字节数。
+上述两个类是所有字节输入/输出流的超类
 
-2. int read() 方法，读取输入流。读取输入流的下一个字节，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1。
+### 20.4.1 InputStream 抽象基类
 
-3. int read(byte[] b) 方法，读取输入流。读取多个字节，存入字节数组b，返回实际读入的字节数。如果到达流的末端，返回-1。
+1. available() 方法，可以获取与之关联的文件的字节数
+
+2. int read() 方法，读取输入流。读取输入流的下一个字节，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1
+
+3. int read(byte[] b) 方法，读取输入流。读取多个字节，存入字节数组b，返回实际读入的字节数。如果到达流的末端，返回-1
 
    > 需要说明的是，一般来讲，返回实际读入的字节数值 和 b.length 的值是一样的，除了最后一次读取返回 -1
 
-4. int read (byte[] b, int off, int len); 方法，读取输入流。每次读取len个字节，存入字节数组b，从off下标开始存储。返回值为每次读取的字节数 len, 如果到达流的末端，返回-1。
+4. int read (byte[] b, int off, int len); 方法，读取输入流。每次读取len个字节，存入字节数组b，从off下标开始存储。返回值为每次读取的字节数 len, 如果到达流的末端，返回-1
 
-   >记住这个参数表
+   > 记住这个参数表
 
-5. close() 方法，关闭当前流，释放与该流相关的资源，防止资源泄露。在带资源的try语句中将被自动调用。关闭流之后还试图读取字节，会出现`IOException`异常。
+5. close() 方法，关闭当前流，释放与该流相关的资源，防止资源泄露。在带资源的try语句中将被自动调用。关闭流之后还试图读取字节，会出现`IOException`异常
 
+### 20.4.2  OutputStream类的常用方法
 
-### 20.4.2 FileInputStream 文件输入流
+1. write (int b); 将指定的字节写入此输出流
+2. write(byte[] b); 将 `b.length` 个字节从指定的 byte 数组写入此输出流
+3. write(byte[] byte, int off, int len); 将指定 byte 数组中从偏移量 `off` 开始的 `len` 个字节写入此输出流
+4. flush();  用于清空缓存里的数据，并通知底层去进行实际的写操作。(强制把缓存区里面的数据写入到文件)
+5. close();关闭当前流，释放与该流相关的资源
 
-**FileInputStream 用于读取本地文件中的字节数据，继承自InputStream类**
+## 20.5 字节文件流
 
-#### 20.4.2.1 FileInputStream构造方法和常用方法
+### 20.5.1 FileInputStream
 
-##### 20.4.2.1.1构造方法
+> FileInputStream 用于读取本地文件中的字节数据，继承自InputStream类
+>
 
-1. FileInputStream(File file); 通过打开一个到实际文件的连接来创建一个`FileInputStream`，该文件通过文件系统中的 `File` 对象 `file` 指定。
-2. FileInputStream(String name); 通过打开一个到实际文件的连接来创建一个`FileInputStream`，该文件通过文件系统中的路径名 `name` 指定。
+#### 1构造
 
-##### 20.4.2.1.2 常用方法
+1. FileInputStream(File file); 通过打开一个到实际文件的连接来创建一个`FileInputStream`，该文件通过文件系统中的 `File` 对象 `file` 指定
+2. FileInputStream(String name); 通过打开一个到实际文件的连接来创建一个`FileInputStream`，该文件通过文件系统中的路径名 `name` 指定
 
-1. read() 方法，读取输入流。读取输入流的**下一个字节**，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1。
+#### 2 常用方法
+
+1. read() 方法，读取输入流。读取输入流的**下一个字节**，返回一个0-255之间的int类型整数。如果到达流的末端，返回-1
 
    ```java
    is = new FileInputStream("test.txt");  
@@ -159,7 +174,7 @@ IO流的作用就是对*文件*(?)数据的读和写
    } 
    ```
 
-2. read(byte[] b) 方法，读取输入流。读取多个字节，存入字节数组b，返回实际读入的字节数。
+2. read(byte[] b) 方法，读取输入流。读取多个字节，存入字节数组b，返回实际读入的字节数
 
    > 如前所述, 这里的**多个字节**是指先定义的 byte[] 的长度
 
@@ -178,41 +193,27 @@ IO流的作用就是对*文件*(?)数据的读和写
    }...
    ```
 
-3. read (byte[] b, int off, int len); 方法，读取输入流。每次读取len个字节，存入字节数组b，从off下标开始存储。
+3. read (byte[] b, int off, int len); 方法，读取输入流。每次读取len个字节，存入字节数组b，从off下标开始存储
 
-4. close() 方法，关闭当前流，释放与该流相关的资源，防止资源泄露。在带资源的try语句中将被自动调用。关闭流之后还试图读取字节，会出现IOException异常。
+4. close() 方法，关闭当前流，释放与该流相关的资源，防止资源泄露。在带资源的try语句中将被自动调用。关闭流之后还试图读取字节，会出现IOException异常
 
-5. skip(long n) 方法，跳过(放弃)当前流的n个字节，返回实际跳过的字节数。
+5. skip(long n) 方法，跳过(放弃)当前流的n个字节，返回实际跳过的字节数
 
-## 20.5 字节输出流:
+### 20.5.2 FileOutputSream
 
-### 20.5.1 OutputStream类的常用方法
-
-1. write (int b); 将指定的字节写入此输出流。
-2. write(byte[] b); 将 `b.length` 个字节从指定的 byte 数组写入此输出流。
-3. write(byte[] byte, int off, int len); 将指定 byte 数组中从偏移量 `off` 开始的 `len` 个字节写入此输出流。
-4. flush();  用于清空缓存里的数据，并通知底层去进行实际的写操作。(强制把缓存区里面的数据写入到文件)
-5. close();关闭当前流，释放与该流相关的资源。
-
-### 20.5.2 OuputStream类的子类:文件输出类FileOutputStream
-
-**提供了文件的基本写入能力，继承自 OuputStream类**
-
-> 注意：
+> 提供了文件的基本写入能力，继承自 OuputStream类
 >
 > 1. 如果进行写操作的文件不存在，则自动创建该文件
 > 2. 如果文件所在的路径也不存在则报错
 
-#### 20.5.2.1 FileOutputStream构造方法和常用方法
-
-##### 20.5.2.1.1 构造方法
+#### 1 构造
 
 1. public FileOutputStream(String name); 通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的路径名 `name` 指定
 2. public FileOutputStream(String name,boolean append);通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的路径名 `name` 指定。如果第二个参数为true，则将字节写入文件末尾处，而不是写入文件开始处
 3. public FileOutputStream(File file)：通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的 `File` 对象 `file` 指定
 4. public FileOutputStream(File file,boolean append);通过打开一个到实际文件的连接来创建一个`FileOutputStream`，该文件通过文件系统中的 `File` 对象 `file` 指定。如果第二个参数为true，则将字节写入文件末尾处，而不是写入文件开始处
 
-##### 20.5.2.1.1 常用方法
+#### 2 常用方法
 
 1. write (int b); 将指定的字节写入此输出流。
 
@@ -265,11 +266,12 @@ IO流的作用就是对*文件*(?)数据的读和写
 
 ## 20.6 字节缓冲流
 
-BufferedInputStream与BufferedOutputStream分别是FilterInputStream类和FilterOutputStream类的子类，实现了**装饰设计模式**。提高了读写性能。
+BufferedInputStream与BufferedOutputStream分别是FilterInputStream类和FilterOutputStream类的子类，实现了**装饰设计模式** ，提高了读写性能
 
-### 20.6.1字节输入缓冲流 BufferedInputStream
+### 1 BufferedInputStream
 
-BufferedInputStream是带缓冲区的输入流，默认缓冲区大小是8Kb，能够减少访问磁盘的次数，提高文件读取性能；
+> BufferedInputStream是带缓冲区的输入流，默认缓冲区大小是8Kb，能够减少访问磁盘的次数，提高文件读取性能
+>
 
 使用方式：
 
@@ -278,6 +280,8 @@ try {
 	File file = new File("test.txt");
 	InputStream fos = new FileInputStream(file);
 	BufferedInputStream bis = new BufferedInputStream(fos,2*1024);//2*1024设置需要的缓冲区大小
+  
+  BUfferedInputStream bis = new BufferedInputStream(new FileInputStream(new File("")));
 	byte b[] =new byte[1024];
 	while (bis.read(b)!=-1) {
 		for (byte c : b) {
@@ -288,11 +292,12 @@ try {
 }
 ```
 
-### 20.6.2 字节输出缓冲流 BufferedOutputStream
+### 2 BufferedOutputStream
 
-BufferedOutputStream是带缓冲区的输出流，能够提高文件的写入效率。
+> BufferedOutputStream是带缓冲区的输出流，能够提高文件的写入效率
+>
 
-使用方式：
+使用方式
 
 ```java
 try {
@@ -305,6 +310,88 @@ try {
 	bos.close();
 }
 ```
+
+## 20.7 对象流
+
+### 1 对象流
+
+`ObjectInputStream` 和`ObjectOutputStream`类分别是InputStream和OutputStream的子类
+
+使用readObject（）读取一个对象
+
+对象输出流使用writeObject(Object obj)方法，将一个对象obj写入到一个文件
+
+**构造方法：**
+
+1. ObjectInputStream (InputStream in)
+2. ObjectOutputStream(OutputStream out)
+
+**代码示例：**
+
+1. 将对象写入文件：
+
+   ```java
+   	//'序列化'的对象写入文件
+   	OutputStream outputStream = new FileOutputStream(file);
+   	ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+   	objectOutputStream.writeObject(Object obj);
+   	objectOutputStream.close();
+   ```
+
+2. 从文件读取对象：
+
+   ```java
+   	//序列化读取对象
+   	InputStream inputStream = new FileInputStream(file);
+   	ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+   	Object obj = objectInputStream.readObject();
+   	objectInputStream.close();
+   ```
+
+> 注意：当使用对象流写入或者读取对象的时候，必须保证**该对象是`序列化`的**，这样是为了保证对象能够正确的写入文件，并能够把对象正确的读回程序
+
+### 2 对象序列化
+
+​	所谓的对象的序列化就是将对象转换成二进制数据流的一种实现手段，通过将对象序列化，可以方便的实现对象的传输及保存。在Java中提供了ObejctInputStream 和ObjectOutputStream这两个类用于序列化对象的操作。用于存储和读取对象的输入输出流类，要想实现对象的序列化需要实现Serializable接口，但是Serializable接口中没有定义任何的方法，仅仅被用作一种标记，以被编译器作特殊处理
+
+```java
+import java.io.Serializable;
+//实现了Serializable接口, 可以进行序列化
+public class Student implements Serializable {
+	//由编译器自动生成，用来解决不同的版本之间的序列化问题
+	private static final long serialVersionUID = -79485540193100816L;
+
+	private int age;
+	private String name;
+
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Student() {
+		super();
+	}
+	public Student(int age, String name) {
+		this.age = age;
+		this.name = name;
+	}
+}
+```
+
+### 3 transient
+
+1. 一旦变量被transient修饰，变量将不再是对象持久化(写到磁盘里持久保存)的一部分，该变量内容在序列化后无法获得访问。
+2. transient关键字只能修饰变量，而不能修饰方法和类。注意，本地变量是不能被transient关键字修饰的。变量如果是用户自定义类变量，则该类需要实现Serializable接口。
+3. **被transient关键字修饰的成员变量不再能被序列化。**
+4. **静态变量不管是否被transient修饰，均不能被序列化。**
 
 # 作业
 

@@ -345,9 +345,9 @@ try {
 
 ### 22.1.2 内存流的构造方法
 
-1. ByteArrayInputStream(byte buf[]); 创建一个 ByteArrayInputStream 并把指定该输入流的数据源buf[]。
-2. ByteArrayOutputStream(); 创建一个 ByteArrayOutputStream 并把分配一个32字节（默认大小）的缓冲区。
-3. ByteArrayOutputStream(int size); 创建一个 ByteArrayOutputStream 并分配自定 size 字节的缓冲区。
+1. ByteArrayInputStream(byte buf[]); 创建一个 ByteArrayInputStream 并把指定该输入流的数据源buf[]
+2. ByteArrayOutputStream(); 创建一个 ByteArrayOutputStream 并把分配一个32字节（默认大小）的缓冲区
+3. ByteArrayOutputStream(int size); 创建一个 ByteArrayOutputStream 并分配自定 size 字节的缓冲区
 
 ### 22.1.3 读取内存数据和写入到内存数据
 
@@ -379,108 +379,16 @@ try {
 
 ### 22.1.4  ByteArrayOutputStream 常用方法:toByteArray(), toString()
 
-1. toByteArray() 方法；是将 ByteArrayOutputStream 对象所写入到内存的数据 转换成 byte[] 返回。
-2. toString() 方法 ；是将 ByteArrayOutputStream 对象所写入到内存的数据 转换成 String 返回。
+1. toByteArray() 方法；是将 ByteArrayOutputStream 对象所写入到内存的数据 转换成 byte[] 返回
+2. toString() 方法 ；是将 ByteArrayOutputStream 对象所写入到内存的数据 转换成 String 返回
 
 > 提示：内存流 除了 ByteArrayInputStream 与 ByteArrayOutputStream 主要处理字节数据之外，对应的还有：
 >
-> - CharArrayReader 与  CharArrayWriter 主要处理字符数组。
-> - StringReader 与 StringWriter 主要处理字符串。
+> - CharArrayReader 与  CharArrayWriter 主要处理字符数组
+> - StringReader 与 StringWriter 主要处理字符串
 >
-> 使用方式大同小异。
+> 使用方式大同小异
 >
-> 
-
-
-
-## 22.3 对象流
-
-### 22,3,1 对象流
-
-​	ObjectInputStream ObjectOutputStream类分别是InputStream和OutputStream的子类，对象输出流使用writeObject(Object obj)方法，将一个对象obj写入到一个文件，使用readObject（）读取一个对象。
-
-**构造方法：**
-
-1. ObjectInputStream (InputStream in)
-2. ObjectOutputStream(OutputStream out)
-
-**代码示例：**
-
-1. 将对象写入文件：
-
-   ```java
-   	//'序列化'的对象写入文件
-   	OutputStream outputStream = new FileOutputStream(file);
-   	ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-   	objectOutputStream.writeObject(Object obj);
-   	objectOutputStream.close();
-   ```
-
-2. 从文件读取对象：
-
-   ```java
-   	//序列化读取对象
-   	InputStream inputStream = new FileInputStream(file);
-   	ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-   	Object obj = objectInputStream.readObject();
-   	objectInputStream.close();
-   ```
-
-> 注意：当使用对象流写入或者读取对象的时候，必须保证该对象是`序列化`的，这样是为了保证对象能够正确的写入文件，并能够把对象正确的读回程序。
->
-> 什么是对象序列化？
-
-### 22.3.2 对象序列化
-
-​	所谓的对象的序列化就是将对象转换成二进制数据流的一种实现手段，通过将对象序列化，可以方便的实现对象的传输及保存。在Java中提供了ObejctInputStream 和ObjectOutputStream这两个类用于序列化对象的操作。用于存储和读取对象的输入输出流类，要想实现对象的序列化需要实现Serializable接口，但是Serializable接口中没有定义任何的方法，仅仅被用作一种标记，以被编译器作特殊处理。
-
-```java
-package com.yztc.main;
-
-import java.io.Serializable;
-//实现了Serializable接口。序列化
-public class Student implements Serializable {
-	//由编译器自动生成，用来解决不同的版本之间的序列化问题。 
-	private static final long serialVersionUID = -79485540193100816L;
-
-	private int age;
-	private String name;
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Student() {
-		super();
-	}
-
-	public Student(int age, String name) {
-		this.age = age;
-		this.name = name;
-	}
-
-}
-```
-
-### 22.3.3 transient
-
-1. 一旦变量被transient修饰，变量将不再是对象持久化(写到磁盘里持久保存)的一部分，该变量内容在序列化后无法获得访问。
-2. transient关键字只能修饰变量，而不能修饰方法和类。注意，本地变量是不能被transient关键字修饰的。变量如果是用户自定义类变量，则该类需要实现Serializable接口。
-3. **被transient关键字修饰的成员变量不再能被序列化。**
-4. **静态变量不管是否被transient修饰，均不能被序列化。**
-
 
 
 ## 22.4 RandomAccessFile类
