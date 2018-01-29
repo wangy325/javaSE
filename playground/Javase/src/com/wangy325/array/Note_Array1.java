@@ -44,7 +44,7 @@ public class Note_Array1 {
 		// 2. Arrays.sort()
 		// 按照数字大小顺序进行排序
 		int[] arr3 = { 12, 123, 213, 23, 56, 234, 89, 765 };
-		Arrays.sort(arr3);
+//		Arrays.sort(arr3);
 		System.out.println(Arrays.toString(arr3));
 		// [12, 23, 56, 89, 123, 213, 234, 765]
 		System.out.println("************ cut off line***********");
@@ -67,7 +67,7 @@ public class Note_Array1 {
 		Arrays.sort(arr4);
 		int eindex = Arrays.binarySearch(arr4, 11);
 		System.out.println("元素在数组中的索引是" + eindex);
-		int eindex1 = Arrays.binarySearch(arr3, 78);
+		int eindex1 = Arrays.binarySearch(arr3, 89);
 		System.out.println("元素在数组中的索引是:" + eindex1);
 		System.out.println("************ cut off line***********");
 
@@ -107,6 +107,26 @@ public class Note_Array1 {
 		String a = Arrays.toString(arr);
 
 		System.out.println(a);
+		
+		//-----------------------------------//
+		int[] scores = { 3, 4, 7, 12, 43, 5,10, 6,1 };
+		// 二分查找数组元素，数组要先排序
+		 Arrays.sort(scores);
+		int binarySearch = Arrays.binarySearch(scores, 12);
+		//在数组中找 12 这个值，并返回找到的下标位置，如果不存在，则返回 负数
+		System.out.println(binarySearch);
+		//将输出：7
+		
+		System.out.println("-----------------------");
+		
+		int[][] foo={{2,3,4},{5,6},{7,8,9,10}};//边声明，边赋值
+		for(int i = 0;i<foo.length;i++) {
+			for(int j = 0;j<foo[i].length;j++) {
+				System.out.println("foo["+i+"]["+j+"]="+foo[i][j]+"\t");
+			}
+			System.out.println("");
+		}
+		System.out.println(foo[1][3]);
 
 	}
 

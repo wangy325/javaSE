@@ -18,6 +18,21 @@ public class Ex03 {
 
 	public static void main(String[] args) {
 		// TODO 输入一个整数，然后将其倒序输出
+//		method1();
+		System.out.println(method2(123));
+	}
+
+	private static int method2(int num) {
+		// TODO Auto-generated method stub
+		int mun = 0;
+		while(num != 0) {
+			mun =mun*10+ num%10 ;
+			num /= 10;
+		}
+		return mun;
+	}
+
+	public static void method1() {
 		System.out.println("请输入一个整数：");
 		Scanner integer = new Scanner(System.in);
 		int i = integer.nextInt();
