@@ -38,7 +38,7 @@
 		<display-name>readFormByGet</display-name>
 		<servlet-name>readFormByGet</servlet-name>
 		<servlet-class>com.wangy325.servletdemo.ReadFormByGet</servlet-class>
-		
+
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>readFormByGet</servlet-name>
@@ -50,35 +50,53 @@
 		<servlet-class>com.wangy325.servletdemo.ReadFormByPost</servlet-class>
 	</servlet>
 	<servlet-mapping>
-                <servlet-name>readFormByPost</servlet-name>
-                <url-pattern>/bypost</url-pattern>
+		<servlet-name>readFormByPost</servlet-name>
+		<url-pattern>/bypost</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>readCheckBox</servlet-name>
+		<servlet-class>com.wangy325.servletdemo.ReadCheckBox</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>readCheckBox</servlet-name>
+		<url-pattern>/checkbox</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>getParas</servlet-name>
+		<servlet-class>com.wangy325.servletdemo.GetParas</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getParas</servlet-name>
+		<url-pattern>/getparas</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>getParas1</servlet-name>
+		<servlet-class>com.wangy325.servletdemo.GetParas1</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getParas1</servlet-name>
+		<url-pattern>/getparas1</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>getHeader</servlet-name>
+		<servlet-class>com.wangy325.servletdemo.GetHeader</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>getHeader</servlet-name>
+		<url-pattern>/gethead</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
-                <servlet-name>readCheckBox</servlet-name>
-                <servlet-class>com.wangy325.servletdemo.ReadCheckBox</servlet-class>
+                <servlet-name>refresh</servlet-name>
+                <servlet-class>com.wangy325.servletdemo.RefreshResponseHeaderAutomaticlly</servlet-class>
         </servlet>
         <servlet-mapping>
-                <servlet-name>readCheckBox</servlet-name>
-                <url-pattern>/checkbox</url-pattern>
-        </servlet-mapping>
-        
-        <servlet>
-                <servlet-name>getParas</servlet-name>
-                <servlet-class>com.wangy325.servletdemo.GetParas</servlet-class>
-        </servlet>
-        <servlet-mapping>
-                <servlet-name>getParas</servlet-name>
-                <url-pattern>/getparas</url-pattern>
-        </servlet-mapping>
-        
-        <servlet>
-                <servlet-name>getParas1</servlet-name>
-                <servlet-class>com.wangy325.servletdemo.GetParas1</servlet-class>
-        </servlet>
-        <servlet-mapping>
-                <servlet-name>getParas1</servlet-name>
-                <url-pattern>/getparas1</url-pattern>
+                <servlet-name>refresh</servlet-name>
+                <url-pattern>/refresh</url-pattern>
         </servlet-mapping>
 
 </web-app>
