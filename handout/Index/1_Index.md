@@ -26,15 +26,24 @@ Dos命令界面：
 
 ![](https://raw.githubusercontent.com/wangy325/javaSE/master/meterial/img1/dos.png)
 
-md : 创建目录
-cd : 进入指定目录      如：C:\Users\Administrator> cd dosTest     则会进入 C:\Users\Administrator\dosTest>
-dir : 列出当前目录下的文件以及文件夹
-cd.. : 退回到上一级目录
-cd/ : 退回到根目录
-rd : 删除目录
-del : 删除文件
-cls：清空窗口
-exit : 推出dos命令行
+> md : 创建目录
+>
+> cd : 进入指定目录      如：C:\Users\Administrator> cd dosTest     则会进入 C:\Users\Administrator\dosTest>
+>
+> dir : 列出当前目录下的文件以及文件夹
+>
+> cd.. : 退回到上一级目录
+>
+> cd/ : 退回到根目录
+>
+> rd : 删除目录
+>
+> del : 删除文件
+>
+> cls：清空窗口
+>
+> exit : 推出dos命令行
+>
 
 **绝对路径和相对相对的理解**   
 
@@ -272,28 +281,28 @@ a  	￥a	$a#12	Public	public	_3	3aa		a_4
    > private 		public 	protected
 
 2. 包的关键字(2个)
-  > import	package
+   > import	package
 
 3. 数据类型关键字 (12-3个)
-  > 基本数据类型 8 个 + void	~~null~~		~~true~~		~~false~~
+   > 基本数据类型 8 个 + void	~~null~~		~~true~~		~~false~~
 
 4. 流程控制语句关键字(12个)
-  > if		else		while	for		switch	case 	default		
-  > do		break		continue	return		instanceof	
+   > if		else		while	for		switch	case 	default		
+   > do		break		continue	return		instanceof	
 
 5. 修饰方法/类/属性/变量的关键字(9个)
-  > static		final		super		this		native
-  > stricfp		synchronized(线程,同步)		transient	volatile
+   > static		final		super		this		native
+   > stricfp		synchronized(线程,同步)		transient	volatile
 
 6. 定义类/接口/抽象和实现接口/继承类,实例化对象的关键字(6个)
-  > class		interface		abstract		implements
-  > extends		new
+   > class		interface		abstract		implements
+   > extends		new
 7. 异常处理(5个)
-  > try		catch		finally		throw		throws
+   > try		catch		finally		throw		throws
 8. 其他(2个)
-  > enum(枚举)		assert
+   > enum(枚举)		assert
 9. 保留字(2个)
-  > const		goto
+   > const		goto
 
 | abstract |  default  |     if     |   private    |    this     |
 | :------: | :-------: | :--------: | :----------: | :---------: |
@@ -321,7 +330,7 @@ a  	￥a	$a#12	Public	public	_3	3aa		a_4
 
      **例如：把52换算成二进制数，计算结果如图：**
 
-     ![](file:///home/wangy325/git/javaSE/meterial/img/decimal2binary.gif)
+     ![](https://raw.githubusercontent.com/wangy325/javaSE/master/meterial/img1/decimal2binary.gif)
 
      52除以2得到的余数依次为：0、0、1、0、1、1，倒序排列，所以52对应的二进制数为：110100。
 
@@ -367,7 +376,7 @@ a  	￥a	$a#12	Public	public	_3	3aa		a_4
 
      2. 首位为0，则为整数，那么将二进制中的三位数分别于下边对应的值相乘后再相加得到的值为换算为十进制的结果：
 
-        ![](file:///home/wangy325/git/javaSE/meterial/img/bin2dec.jpg)
+        ![](https://raw.githubusercontent.com/wangy325/javaSE/master/meterial/img1/bin2dec.jpg)
 
      3. 如果二进制补足位数之后首位为1，那么其对应的十进制为负数，那么需要先对二进制减1，再取反然后再换算。
 
@@ -378,6 +387,7 @@ a  	￥a	$a#12	Public	public	_3	3aa		a_4
         $$
         (11111010)_2=(-6)_{10}
         $$
+
 
 
 
@@ -546,7 +556,7 @@ Java语言提供了八种基本类型。六种数字类型（四个整数型，�
 
 * > byte short char 进行运算的时候类型自动提升为 int
 
-  ![](file:///home/wangy325/git/javaSE/meterial/img/type_convert.png)
+  ![](https://raw.githubusercontent.com/wangy325/javaSE/master/meterial/img1/type_convert.png)
 
 如：
 
