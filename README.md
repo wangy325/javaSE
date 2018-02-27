@@ -1,7 +1,7 @@
 javaSE 基础纲要
 ===
 
-[基本数据类型](/handout/Index.md)
+[基本数据类型](/handout/Index/Index.md)
 
 [条件判断语句](/handout/ConStat.md)
 

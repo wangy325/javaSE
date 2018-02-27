@@ -1,10 +1,14 @@
 # 多态(Polymorphism)
 
+Java 面向对象三大基本特征之一
 
+1. 多态
+2. 转型
+3. Object 超类的常见4个方法介绍（简单）
 
-## 10.1多态
+## 8.1多态
 
-### 10.1.1 什么是多态（具有多种形态）
+### 8.1.1 什么是多态（具有多种形态）
 
 在java中，一个对象的引用会有**两种类型**：1、编译时类型 2、运行时类型。
 
@@ -12,15 +16,15 @@
 
 > 运行时类型由实际赋给该变量的对象决定(赋值运算符右边)
 
-如果编译时类型和运行时类型不一致，就会出现所谓**多态**(Polymorphism)。
+如果编译时类型和运行时类型不一致，就会出现**多态**(Polymorphism)
 
-可以这么理解：定义一个引用变量，*编译时*是否能够通过要看赋值运算符的左边。*运行时*的实际表现要看赋值运算符的右边。
+可以这么理解：定义一个引用变量，*编译时*是否能够通过要看赋值运算符的左边。*运行时*的实际表现要看赋值运算符的右边
 
-### 10.1.2 多态的体现
+### 8.1.2 多态的体现
 
-多态只体现在 对象的方法中，属性(成员变量)和静态方法不具有多态性。
+多态只体现在 **对象的方法**中，属性(成员变量)和静态方法不具有多态性
 
-> Java 的多态机制遵循一个原则：当父类引用变量指向子类对象时，对象的类型决定了调用谁的成员方法，但是这个被调用的方法必须是在父类中定义过的，也就是说被子类重写的方法。
+> Java 的多态机制遵循一个原则：当父类引用变量指向子类对象时，对象的类型决定了调用谁的成员方法，但是这个被调用的方法必须是在父类中定义过的，也就是说被子类重写的方法
 
 代码示例：
 
@@ -28,11 +32,9 @@
 
 ```java
 public class FatherClass {
-
 	public void  show() {
 		System.out.println("父类的方法");
 	}
-
 }
 ```
 
@@ -40,12 +42,10 @@ public class FatherClass {
 
 ```java
 public class ChildClass extends FatherClass {
-
 	@Override
 	public void show() {
 		System.out.println("子类的方法");
 	}
-
 }
 ```
 
@@ -60,26 +60,29 @@ public class ChildClass extends FatherClass {
 // 当运行的时候, 调用引用类型(FatherClass类)的方法时, 总是表现为子类的方法的行为特征
 // (前提是子类重写了父类的方法)
 // 所以, 如果声明了相同类型的引用变量(Upcasting或没有), 调用相同的方法, 可能会表现不同的行为特征
+// 如果子类中，未重写父类的 show() 方法， 那么将会直接调用父类的方法
 // 这, 即是多态
 ///:~
 //		子类的方法
 ```
 
-### 10.1.3 动态多态和静态多态
+### 8.1.3 动态多态和静态多态
 
-1. 静态多态性指的是程序在编译时，系统就能决定调用哪个函数，如重载。 
+1. 静态多态性指的是程序在编译时，系统就能决定调用哪个函数，如重载
 2. 动态多态性指在运行中才能动态确定操作指针所指的对象，主要通过抽象函数和重写来实现。
 
-## 10.2 对象转型
+## 8.2 对象转型
 
-### 10.2.1 什么是对象转型
+### 8.2.1 什么是对象转型
 
-1. 一个基类的引用类型变量可以“指向”其子类的对象。
-2. 一个基类的引用不可以访问其子类对象新增加的成员（属性和方法）。
-3. 可以使用 引用变量 instanceof 类名 来判断该引用型变量所“指向”的对象是否属于该类或该类的子类。
-4. 子类的对象可以当做基类的对象来使用称作向上转型（upcasting）,反之成为向下转型（downcasting）。
+`基类的引用 ---> 子类的实例对象`
 
-### 10.2.2 向上转型
+1. 一个基类的引用类型变量可以“指向”其子类的对象
+2. 一个基类的引用不可以访问其子类对象新增加的成员（属性和方法）
+3. 可以使用 `引用变量 instanceof 类名` 来判断该引用型变量所“指向”的对象是否属于该类或该类的子类
+4. 子类的对象可以当做基类的对象来使用称作向上转型（upcasting）,反之成为向下转型（downcasting）
+
+### 8.2.2 向上转型
 
 假设，FatherClass类是ChildClass类的父类：
 
@@ -89,9 +92,11 @@ FatherClass fClass = new ChildClass();//向上转型
 
 > Java 中, 子类是一种特殊的父类, 因此 Java 允许把一个子类对象直接赋值给一个父类引用变量, 而无须任何类型转换, 这就是向上转型(Upcasting)
 
-### 10.2.3 向下转型 （instanceOf）
+### 8.2.3 向下转型 （instanceOf）
 
-假设，FatherClass类是ChildClass类的父类：
+假设，FatherClass类是ChildClass类的父类
+
+即已声明 `FatherClass father = new FatherClass();`：
 
 ```java
 	public void test(FatherClass father){
@@ -101,13 +106,74 @@ FatherClass fClass = new ChildClass();//向上转型
 	}
 ```
 
-### 10.2.4 什么时候需要使用对象的转型
+```java
+package com.wangy325.demo01;
 
-* 当父类引用指向子类对象的时候，需要访问子类新增的属性和方法时。
-* 当*形参*定义的是父类类型变量(引用)，但*实参*有可能是该形参类型的子类对象时。
-* 当返回值类型是父类类型，但返回的具体对象是子类对象时。
+public class Son extends FatherClass {
+    /**
+     * 多态， 对象转型（upcasting &downcasting）
+     */
 
-## 10.3 Object类
+    private String d = "飞花";
+
+    @Override
+    public void test() {
+        System.out.println("子类重写的父类方法，什么都没有做");
+    }
+
+    public static void main(String[] args) {
+        // 自动向上转型
+        // 父类引用 = 子类对象
+        FatherClass fs = new Son();
+        // 可以访问父类的成员变量和方法
+        // 如果子类覆写了方法，则访问子类覆写的方法
+        fs.test();
+        System.out.println(fs.s);
+//        fs 不能访问子类新创建的成员变量和方法
+//        System.out.println(fs.d);
+//        fs.foo();
+        // 如果要访问子类新建的成员变量和方法，须向下转型
+        if (fs instanceof Son) {
+            Son son = (Son) fs;
+            System.out.println(son.d);
+            son.foo();
+        }
+    }
+
+    public void foo() {
+        System.out.println(d);
+    }
+}
+///:~
+// 子类重写的父类方法，什么都没有做
+// holo
+// 飞花
+// 飞花
+```
+
+> 1、父类引用可以指向子类对象，子类引用不能指向父类对象
+>
+> 2、把子类对象直接赋给父类引用叫upcasting向上转型，向上转型不用强制转型
+>
+> 　　 如Father father = new Son();
+>
+> 3、把指向子类对象的父类引用赋给子类引用叫向下转型（downcasting），要强制转型
+>
+> 　　 如father就是一个指向子类对象的父类引用，把father赋给子类引用son 即Son son =（Son）father；
+>
+> 　　 其中father前面的（Son）必须添加，进行强制转换
+>
+> 4、upcasting 会丢失子类特有的方法,但是子类overriding 父类的方法，子类方法有效
+>
+> 5、向上转型的作用，减少重复代码，父类为参数，调有时用子类作为参数，就是利用了向上转型。这样使代码变得简洁。体现了JAVA的抽象编程思想
+
+### 8.2.4 什么时候需要使用对象的转型
+
+* 当父类引用指向子类对象的时候，需要访问子类新增的属性和方法时 ----> 向下转型
+* 当*形参*定义的是父类类型变量(引用)，但*实参*有可能是该形参类型的子类对象时
+* 当返回值类型是父类类型，但返回的具体对象是子类对象时
+
+## 8.3 Object类
 
 **所有的类均直接或间接的继承自Object类**
 
@@ -115,18 +181,16 @@ FatherClass fClass = new ChildClass();//向上转型
 2. Object类可以看成是java中的“上帝类”或“祖宗类”。如果一个类显式的继承某个类，则该类不再直接继承Object类(Java的单继承)。但一定是间接继承Object类。
 
 ```java
-public class Person {
-}
+public class Person {}
 与
-public class Person extends Object{
-}
+public class Person extends Object{}
 是等价的
 ```
 
-### 10.3.1 equals()方法
+### 8.3.1 equals()方法
 
-1. 该方法的返回值为boolean值。默认情况下当调用该方法的对象和参数传入的对象是同一对象时返回true，否则返回false。
-2. 一般情况，根据实际的业务需求对该方法进行覆写，来定义自己的“相等”逻辑。
+1. 该方法的返回值为boolean值。默认情况下当调用该方法的对象和参数传入的对象**是同一对象**时返回true，否则返回false。
+2. 一般情况，根据实际的业务需求对该方法进行覆写，来定义自己的“相等”逻辑
 
 > 提示：当如果需要把对象存入set集合中，需要覆写该方法(后续重点讲解)
 >
@@ -136,12 +200,12 @@ public class Person extends Object{
 > * equals默认也是比较的两个对象是否为同一对象。(从Objcet继承过来的)
 > * 一般通过覆写equals方法来定义两个对象逻辑上是否相等。
 
-### 10.3.2 [hashCode()方法](http://blog.csdn.net/fenglibing/article/details/8905007)
+### 8.3.2 [hashCode()方法](http://blog.csdn.net/fenglibing/article/details/8905007)
 
 1. 该方法是一种native方法，即方法的实际实现是用c或c++写的。
 2. 该方法的返回值为十进制的int值，可以理解为调用该方法的对象在堆内存中的地址值(唯一)。该方法一般在子类中进行覆写。
 
-### 10.3.3 getClass()方法
+### 8.3.3 getClass()方法
 
 1. 该方法是一种native方法，即方法的实际实现是用c或c++写的。
 
@@ -149,7 +213,7 @@ public class Person extends Object{
 
    > 此方法到反射的时候再讲解
 
-### 10.3.4 toString()方法
+### 8.3.4 toString()方法
 
 1. 该方法的返回值是String类型，描述当前对象的有关信息。默认是返回：调用该方法的对象所属类的类名+@+十六进制的hashCode值。
 2. 该方法在子类中一般需要覆写，具体覆写样式根据业务需求来定。
@@ -162,7 +226,55 @@ public class Person extends Object{
 # 作业
 
 1. 声明一个Book类，属性有作者、书名、出版社三个属性。当两本书的作者、书名、出版社完全相同，则认为是同一本书。
-   根据需要覆写hashCode、equals、toString方法。
+   根据需要覆写hashCode、equals、toString方法
+
+   ```java
+   package com.wangy325.demo02;
+
+   import java.util.Objects;
+
+   public class Book {
+       private String name, author, press;
+
+       public Book(String name, String author, String press) {
+           this.name = name;
+           this.author = author;
+           this.press = press;
+       }
+
+       public static void main(String[] args) {
+           Book b1 = new Book("kite", "allen", "KLP");
+           Book b2 = new Book("kite", "allen", "KLP");
+           System.out.println(b1.equals(b2));
+           System.out.println(b1.hashCode() == b2.hashCode());
+       }
+
+       @Override
+       public boolean equals(Object o) {
+           if (this == o)
+               return true;
+           if (o == null || getClass() != o.getClass())
+               return false;
+           if(!(o instanceof Book))
+               return false;
+           Book book = (Book) o;
+           if(this.name.equals(((Book) o).name)
+                   && this.author.equals(((Book) o).author)
+                   && this.press.equals(((Book) o).press))
+               return true;
+           return false;
+       }
+
+       @Override
+       public int hashCode() {
+
+           return Objects.hash(name, author, press);
+       }
+   }
+   ///:~
+   // true
+   // true
+   ```
 
 2. 完成宠物管理系统！
 

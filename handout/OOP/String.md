@@ -371,7 +371,7 @@ StringBuilder与StringBuffer的用法完全一致，唯一的区别是StringBuff
 
 1. matches(String regex) 
 
-           告知此字符串是否匹配给定的正则表达式。
+          告知此字符串是否匹配给定的正则表达式。
 
    如：匹配邮箱
 
